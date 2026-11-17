@@ -112,35 +112,68 @@ export function updateCountdownAndSmartBanner(): void {
   const minsEl = document.getElementById('cd-minutes');
   const badgeEl = document.getElementById('countdown-badge');
 
+  const daysMobileEl = document.getElementById('cd-days-mobile');
+  const hoursMobileEl = document.getElementById('cd-hours-mobile');
+  const minsMobileEl = document.getElementById('cd-minutes-mobile');
+  const badgeMobileEl = document.getElementById('countdown-badge-mobile');
+
   if (diffMs > 0) {
     const totalMinutes = Math.floor(diffMs / (1000 * 60));
     const d = Math.floor(totalMinutes / (60 * 24));
     const h = Math.floor((totalMinutes % (60 * 24)) / 60);
     const m = totalMinutes % 60;
 
-    if (daysEl) daysEl.textContent = toPersianDigits(d);
-    if (hoursEl) hoursEl.textContent = toPersianDigits(h);
-    if (minsEl) minsEl.textContent = toPersianDigits(m);
+    const dStr = toPersianDigits(d);
+    const hStr = toPersianDigits(h);
+    const mStr = toPersianDigits(m);
+
+    if (daysEl) daysEl.textContent = dStr;
+    if (hoursEl) hoursEl.textContent = hStr;
+    if (minsEl) minsEl.textContent = mStr;
+
+    if (daysMobileEl) daysMobileEl.textContent = dStr;
+    if (hoursMobileEl) hoursMobileEl.textContent = hStr;
+    if (minsMobileEl) minsMobileEl.textContent = mStr;
+
+    let badgeText = '';
+    let badgeClass = '';
+    if (daysRemaining > 3) {
+      badgeText = `${toPersianDigits(daysRemaining)} روز مانده`;
+      badgeClass = 'inline-block text-xs font-bold px-2.5 py-1 rounded-xl bg-amber-100 text-amber-800';
+    } else if (daysRemaining >= 1) {
+      badgeText = `فقط ${toPersianDigits(daysRemaining)} روز!`;
+      badgeClass = 'inline-block text-xs font-bold px-2.5 py-1 rounded-xl bg-rose-100 text-rose-800 animate-pulse';
+    } else {
+      badgeText = `امروز روز عروسیه! 💍`;
+      badgeClass = 'inline-block text-xs font-bold px-2.5 py-1 rounded-xl bg-rose-600 text-white animate-bounce';
+    }
 
     if (badgeEl) {
-      if (daysRemaining > 3) {
-        badgeEl.textContent = `${toPersianDigits(daysRemaining)} روز تا پیوند`;
-        badgeEl.className = 'inline-block text-xs font-bold px-2.5 py-1 rounded-xl bg-amber-100 text-amber-800';
-      } else if (daysRemaining >= 1) {
-        badgeEl.textContent = `فقط ${toPersianDigits(daysRemaining)} روز باقی‌مانده!`;
-        badgeEl.className = 'inline-block text-xs font-bold px-2.5 py-1 rounded-xl bg-rose-100 text-rose-800 animate-pulse';
-      } else {
-        badgeEl.textContent = `امروز روز موعود است! 💍`;
-        badgeEl.className = 'inline-block text-xs font-bold px-2.5 py-1 rounded-xl bg-rose-600 text-white animate-bounce';
-      }
+      badgeEl.textContent = badgeText;
+      badgeEl.className = badgeClass;
+    }
+    if (badgeMobileEl) {
+      badgeMobileEl.textContent = badgeText;
+      badgeMobileEl.className = badgeClass;
     }
   } else {
     if (daysEl) daysEl.textContent = '۰';
     if (hoursEl) hoursEl.textContent = '۰';
     if (minsEl) minsEl.textContent = '۰';
+
+    if (daysMobileEl) daysMobileEl.textContent = '۰';
+    if (hoursMobileEl) hoursMobileEl.textContent = '۰';
+    if (minsMobileEl) minsMobileEl.textContent = '۰';
+
+    const doneText = 'مراسم برگزار شد 💐';
+    const doneClass = 'inline-block text-xs font-bold px-2.5 py-1 rounded-xl bg-sage-100 text-sage-800';
     if (badgeEl) {
-      badgeEl.textContent = 'مراسم باشکوه برگزار شد 💐';
-      badgeEl.className = 'inline-block text-xs font-bold px-2.5 py-1 rounded-xl bg-sage-100 text-sage-800';
+      badgeEl.textContent = doneText;
+      badgeEl.className = doneClass;
+    }
+    if (badgeMobileEl) {
+      badgeMobileEl.textContent = doneText;
+      badgeMobileEl.className = doneClass;
     }
   }
 
@@ -226,7 +259,7 @@ export function updateProgressBar(): void {
 export function renderChecklistItems(phaseTasks: TaskItem[]): string {
   if (phaseTasks.length === 0) {
     return `
-      <div class="p-6 text-center text-gray-400 text-sm">
+      <div class="p-6 text-center text-gray-400 text-xs sm:text-sm">
         موردی مطابق با فیلتر شما در این بخش یافت نشد.
       </div>
     `;
@@ -235,39 +268,40 @@ export function renderChecklistItems(phaseTasks: TaskItem[]): string {
   return `
     <div class="divide-y divide-gray-100">
       ${phaseTasks.map(task => `
-        <div class="p-4 sm:p-5 flex items-start justify-between gap-3 sm:gap-4 hover:bg-gray-50/60 transition ${task.completed ? 'bg-gray-50/40 opacity-75' : ''}">
-          <div class="flex items-start gap-3 sm:gap-3.5 flex-1 min-w-0">
-            <!-- چک‌باکس بزرگ و لمسی -->
-            <button onclick="window.planner.toggleTaskComplete('${task.id}')" class="mt-0.5 w-6 h-6 rounded-xl border-2 flex items-center justify-center shrink-0 transition ${task.completed ? 'bg-sage-600 border-sage-600 text-white' : 'border-gray-300 hover:border-amber-500 bg-white'}">
+        <div class="p-3.5 sm:p-5 flex items-start justify-between gap-3 hover:bg-gray-50/60 transition active:bg-gray-100/50 ${task.completed ? 'bg-gray-50/50 opacity-75' : ''}">
+          <!-- بخش کلیک‌پذیر برای تیک زدن سریع در موبایل -->
+          <div class="flex items-start gap-3 flex-1 min-w-0 cursor-pointer" onclick="window.planner.toggleTaskComplete('${task.id}')">
+            <!-- چک‌باکس با تاچ تارگت استاندارد انگشت (بسیار راحت در موبایل) -->
+            <button type="button" aria-label="تغییر وضعیت" class="mt-0.5 w-7 h-7 sm:w-6 sm:h-6 rounded-xl border-2 flex items-center justify-center shrink-0 transition ${task.completed ? 'bg-sage-600 border-sage-600 text-white' : 'border-gray-300 hover:border-amber-500 bg-white'}">
               ${task.completed ? '<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>' : ''}
             </button>
 
-            <div class="space-y-1.5 flex-1 min-w-0">
-              <div class="flex flex-wrap items-center gap-2">
-                <span class="text-xs font-semibold px-2 py-0.5 rounded-lg ${getOwnerBadgeClass(task.owner)}">
+            <div class="space-y-1 flex-1 min-w-0">
+              <div class="flex flex-wrap items-center gap-1.5">
+                <span class="text-[11px] sm:text-xs font-semibold px-2 py-0.5 rounded-lg ${getOwnerBadgeClass(task.owner)}">
                   ${task.owner}
                 </span>
-                <span class="text-xs text-gray-500 font-medium bg-gray-100 px-2 py-0.5 rounded-lg">
+                <span class="text-[11px] sm:text-xs text-gray-500 font-medium bg-gray-100 px-2 py-0.5 rounded-lg">
                   ${escapeHtml(task.category)}
                 </span>
-                ${task.time ? `<span class="text-xs text-amber-800 font-bold bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-lg">${toPersianDigits(task.time)}</span>` : ''}
-                ${task.priority === 'high' ? '<span class="text-[11px] font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded-lg border border-rose-200">فوری و مهم</span>' : ''}
+                ${task.time ? `<span class="text-[11px] sm:text-xs text-amber-800 font-bold bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-lg">${toPersianDigits(task.time)}</span>` : ''}
+                ${task.priority === 'high' ? '<span class="text-[10px] sm:text-[11px] font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded-lg border border-rose-200">فوری</span>' : ''}
               </div>
 
-              <h4 class="text-sm sm:text-base font-bold text-gray-900 ${task.completed ? 'line-through text-gray-400' : ''}">
+              <h4 class="text-xs sm:text-base font-bold text-gray-900 leading-snug ${task.completed ? 'line-through text-gray-400' : ''}">
                 ${escapeHtml(task.title)}
               </h4>
 
-              ${task.notes ? `<p class="text-xs sm:text-sm text-gray-600 leading-relaxed">${escapeHtml(task.notes)}</p>` : ''}
+              ${task.notes ? `<p class="text-[11px] sm:text-sm text-gray-600 leading-relaxed">${escapeHtml(task.notes)}</p>` : ''}
             </div>
           </div>
 
-          <!-- دکمه‌های عملیات ویرایش و حذف -->
-          <div class="no-print flex items-center gap-1 shrink-0">
-            <button onclick="window.planner.openEditModal('${task.id}')" title="ویرایش" class="p-1.5 rounded-lg text-gray-400 hover:text-amber-700 hover:bg-amber-50 transition">
+          <!-- دکمه‌های عملیات ویرایش و حذف با تاچ تارگت استاندارد -->
+          <div class="no-print flex items-center gap-0.5 sm:gap-1 shrink-0">
+            <button onclick="event.stopPropagation(); window.planner.openEditModal('${task.id}')" title="ویرایش" class="p-2 sm:p-1.5 rounded-xl text-gray-400 hover:text-amber-700 hover:bg-amber-50 active:scale-90 transition">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
             </button>
-            <button onclick="window.planner.deleteTask('${task.id}')" title="حذف" class="p-1.5 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 transition">
+            <button onclick="event.stopPropagation(); window.planner.deleteTask('${task.id}')" title="حذف" class="p-2 sm:p-1.5 rounded-xl text-gray-400 hover:text-rose-600 hover:bg-rose-50 active:scale-90 transition">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
             </button>
           </div>
@@ -280,49 +314,52 @@ export function renderChecklistItems(phaseTasks: TaskItem[]): string {
 export function renderTimelineItems(phaseTasks: TaskItem[]): string {
   if (phaseTasks.length === 0) {
     return `
-      <div class="p-6 text-center text-gray-400 text-sm">
+      <div class="p-6 text-center text-gray-400 text-xs sm:text-sm">
         رویدادی در این ساعت یا فیلتر یافت نشد.
       </div>
     `;
   }
 
   return `
-    <div class="relative p-4 sm:p-6 space-y-6 before:content-[''] before:absolute before:right-8 sm:before:right-10 before:top-6 before:bottom-6 before:w-0.5 before:bg-rose-200">
+    <div class="relative p-3 sm:p-6 space-y-4 sm:space-y-6 before:content-[''] before:absolute before:right-7 sm:before:right-10 before:top-4 before:bottom-4 before:w-0.5 before:bg-rose-200">
       ${phaseTasks.map(task => {
         const isHighlight = task.time === '18:00' || task.time === '20:00';
         return `
-          <div class="relative flex items-start gap-4 sm:gap-6 group">
-            <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-2xl ${task.completed ? 'bg-sage-600 text-white' : (isHighlight ? 'bg-rose-600 text-white animate-pulse' : 'bg-white border-2 border-rose-300 text-rose-700')} flex items-center justify-center font-black text-xs sm:text-sm shrink-0 shadow-sm z-10 transition">
+          <div class="relative flex items-start gap-3 sm:gap-6 group">
+            <!-- نشانگر ساعت تایم‌لاین -->
+            <div class="w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl ${task.completed ? 'bg-sage-600 text-white' : (isHighlight ? 'bg-rose-600 text-white animate-pulse' : 'bg-white border-2 border-rose-300 text-rose-700')} flex items-center justify-center font-black text-[11px] sm:text-sm shrink-0 shadow-xs z-10 transition">
               ${task.time ? toPersianDigits(task.time) : '••'}
             </div>
 
-            <div class="flex-1 bg-white rounded-2xl border ${isHighlight ? 'border-rose-300 ring-2 ring-rose-100 bg-rose-50/20' : 'border-gray-200'} p-4 shadow-sm hover:shadow-md transition">
-              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
-                <div class="flex flex-wrap items-center gap-2">
-                  <span class="text-xs font-bold px-2.5 py-0.5 rounded-lg ${getOwnerBadgeClass(task.owner)}">${task.owner}</span>
-                  <span class="text-xs font-medium text-gray-500 bg-white px-2 py-0.5 rounded-lg border border-gray-100">${escapeHtml(task.category)}</span>
+            <!-- بدنه کارت تایم‌لاین -->
+            <div class="flex-1 bg-white rounded-2xl border ${isHighlight ? 'border-rose-300 ring-2 ring-rose-100 bg-rose-50/20' : 'border-gray-200'} p-3 sm:p-4 shadow-2xs hover:shadow-xs transition">
+              <div class="flex items-center justify-between gap-2 mb-1.5">
+                <div class="flex flex-wrap items-center gap-1.5">
+                  <span class="text-[11px] sm:text-xs font-bold px-2 py-0.5 rounded-lg ${getOwnerBadgeClass(task.owner)}">${task.owner}</span>
+                  <span class="text-[11px] sm:text-xs font-medium text-gray-500 bg-white px-2 py-0.5 rounded-lg border border-gray-100">${escapeHtml(task.category)}</span>
                 </div>
 
-                <div class="no-print flex items-center gap-1 self-end sm:self-center">
-                  <button onclick="window.planner.openEditModal('${task.id}')" title="ویرایش ساعت یا متن" class="p-1.5 rounded-lg text-gray-400 hover:text-amber-700 hover:bg-amber-50">
+                <div class="no-print flex items-center gap-0.5 sm:gap-1">
+                  <button onclick="window.planner.openEditModal('${task.id}')" title="ویرایش" class="p-1.5 sm:p-1.5 rounded-xl text-gray-400 hover:text-amber-700 hover:bg-amber-50 active:scale-90 transition">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                   </button>
-                  <button onclick="window.planner.deleteTask('${task.id}')" title="حذف" class="p-1.5 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50">
+                  <button onclick="window.planner.deleteTask('${task.id}')" title="حذف" class="p-1.5 sm:p-1.5 rounded-xl text-gray-400 hover:text-rose-600 hover:bg-rose-50 active:scale-90 transition">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                   </button>
                 </div>
               </div>
 
-              <div class="flex items-start gap-3">
-                <button onclick="window.planner.toggleTaskComplete('${task.id}')" class="mt-0.5 w-6 h-6 rounded-xl border-2 flex items-center justify-center shrink-0 transition ${task.completed ? 'bg-sage-600 border-sage-600 text-white' : 'border-gray-300 hover:border-rose-500 bg-white'}">
+              <!-- کلیک روی عنوان یا تیک برای انجام کار -->
+              <div class="flex items-start gap-2.5 sm:gap-3 cursor-pointer" onclick="window.planner.toggleTaskComplete('${task.id}')">
+                <button type="button" aria-label="تغییر وضعیت" class="mt-0.5 w-6 h-6 rounded-xl border-2 flex items-center justify-center shrink-0 transition ${task.completed ? 'bg-sage-600 border-sage-600 text-white' : 'border-gray-300 hover:border-rose-500 bg-white'}">
                   ${task.completed ? '<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>' : ''}
                 </button>
 
-                <div class="flex-1">
-                  <h4 class="text-sm sm:text-base font-extrabold ${task.completed ? 'line-through text-gray-400' : 'text-gray-900'}">
+                <div class="flex-1 min-w-0">
+                  <h4 class="text-xs sm:text-base font-extrabold leading-snug ${task.completed ? 'line-through text-gray-400' : 'text-gray-900'}">
                     ${escapeHtml(task.title)}
                   </h4>
-                  ${task.notes ? `<p class="text-xs sm:text-sm text-gray-600 mt-1.5 leading-relaxed">${escapeHtml(task.notes)}</p>` : ''}
+                  ${task.notes ? `<p class="text-[11px] sm:text-sm text-gray-600 mt-1 leading-relaxed">${escapeHtml(task.notes)}</p>` : ''}
                 </div>
               </div>
             </div>
@@ -393,24 +430,24 @@ export function renderPlanner(): void {
       : (isCurrentFocus ? 'bg-gradient-to-l from-amber-50 to-white border-amber-300' : 'bg-white border-gray-200/80');
 
     html += `
-      <section id="section-${phase.id}" class="rounded-3xl border ${headerBg} shadow-sm overflow-hidden fade-in">
-        <div class="p-4 sm:p-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <section id="section-${phase.id}" class="rounded-2xl sm:rounded-3xl border ${headerBg} shadow-2xs sm:shadow-sm overflow-hidden fade-in">
+        <div class="p-3.5 sm:p-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3">
           <div>
-            <div class="flex flex-wrap items-center gap-2 mb-1">
-              <span class="text-xs font-extrabold px-3 py-1 rounded-full ${isTimeline ? 'bg-rose-600 text-white' : 'bg-amber-100 text-amber-900'}">
+            <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1">
+              <span class="text-[11px] sm:text-xs font-extrabold px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full ${isTimeline ? 'bg-rose-600 text-white' : 'bg-amber-100 text-amber-900'}">
                 ${phase.badge}
               </span>
-              ${isCurrentFocus ? '<span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-sage-600 text-white">فاز فعال امروز</span>' : ''}
-              <span class="text-xs font-semibold text-gray-500">
-                (${toPersianDigits(doneInPhase)} از ${toPersianDigits(totalInPhase)} تکمیل شده)
+              ${isCurrentFocus ? '<span class="text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded-full bg-sage-600 text-white">فاز فعال امروز</span>' : ''}
+              <span class="text-[11px] sm:text-xs font-semibold text-gray-500">
+                (${toPersianDigits(doneInPhase)} از ${toPersianDigits(totalInPhase)})
               </span>
             </div>
-            <h3 class="text-base sm:text-lg font-extrabold text-gray-900">${phase.title}</h3>
-            <p class="text-xs sm:text-sm text-gray-500 mt-0.5">${phase.subtitle}</p>
+            <h3 class="text-sm sm:text-lg font-extrabold text-gray-900">${phase.title}</h3>
+            <p class="text-[11px] sm:text-sm text-gray-500 mt-0.5">${phase.subtitle}</p>
           </div>
 
-          <button onclick="window.planner.openAddModal('${phase.id}')" class="no-print self-start sm:self-center inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 text-xs font-bold shadow-2xs transition">
-            <svg class="w-4 h-4 text-sage-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+          <button onclick="window.planner.openAddModal('${phase.id}')" class="no-print self-start sm:self-center inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 text-xs font-bold shadow-2xs transition active:scale-95">
+            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-sage-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
             <span>+ افزودن به این بخش</span>
           </button>
         </div>
@@ -673,9 +710,38 @@ export function showToast(msg: string): void {
   }, 2600);
 }
 
+export function initScrollHeader(): void {
+  const header = document.getElementById('main-header');
+  if (!header) return;
+
+  let lastScrollY = window.scrollY;
+  let ticking = false;
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        const currentScrollY = window.scrollY;
+
+        // اگر کاربر به سمت پایین اسکرول کرد و بیشتر از ۶۰ پیکسل از بالا گذشته بود، هدر پنهان شود
+        if (currentScrollY > lastScrollY && currentScrollY > 60) {
+          header.classList.add('-translate-y-full');
+        } else if (currentScrollY < lastScrollY) {
+          // اگر کاربر به سمت بالا اسکرول کرد، هدر مجدداً نمایش داده شود
+          header.classList.remove('-translate-y-full');
+        }
+
+        lastScrollY = Math.max(0, currentScrollY);
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+}
+
 export function initApp(): void {
   tasks = loadTasks();
   renderPlanner();
+  initScrollHeader();
   setInterval(() => {
     updateCountdownAndSmartBanner();
   }, 60000);
