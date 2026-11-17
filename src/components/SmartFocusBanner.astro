@@ -1,0 +1,33 @@
+---
+// SmartFocusBanner.astro
+---
+<section id="smart-focus-banner" class="bg-white rounded-3xl border-2 border-amber-300/80 shadow-sm p-4 sm:p-6 relative overflow-hidden">
+  <div class="absolute top-0 left-0 w-32 h-32 bg-amber-100/40 rounded-full -translate-x-10 -translate-y-10 pointer-events-none"></div>
+  <div class="relative flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div class="space-y-1.5">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold">
+        <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
+        <span>پیشنهاد هوشمند امروز بر اساس زمان باقی‌مانده</span>
+      </div>
+      <h2 id="smart-focus-title" class="text-lg sm:text-xl font-extrabold text-gray-900">
+        در حال تحلیل برنامه شما...
+      </h2>
+      <p id="smart-focus-desc" class="text-sm text-gray-600 leading-relaxed max-w-3xl">
+        بر اساس تاریخ امروز و فاصله تا ۴ آذر، کارهای اولویت‌دار این بازه زمانی در پایین مشخص شده‌اند.
+      </p>
+    </div>
+    <div class="no-print flex flex-wrap items-center gap-2 shrink-0">
+      <button onclick="window.planner.filterBySmartFocus()" class="px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-sm font-bold shadow-sm transition active:scale-95">
+        نمایش کارهای اولویت امروز
+      </button>
+      <button onclick="window.planner.jumpToWeddingDay()" class="px-4 py-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-sm font-bold transition active:scale-95">
+        تایم‌لاین ساعتی ۴ آذر
+      </button>
+    </div>
+  </div>
+
+  <!-- پیش‌نمایش سریع ۳ کار فوری امروز -->
+  <div id="smart-quick-tasks" class="mt-4 pt-4 border-t border-gray-100 grid grid-cols-1 md:grid-cols-3 gap-3">
+    <!-- به صورت داینامیک پر می‌شود -->
+  </div>
+</section>

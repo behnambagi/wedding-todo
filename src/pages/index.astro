@@ -1,0 +1,48 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import SmartFocusBanner from '../components/SmartFocusBanner.astro';
+import FilterBar from '../components/FilterBar.astro';
+import TaskModal from '../components/modals/TaskModal.astro';
+import SettingsModal from '../components/modals/SettingsModal.astro';
+import Toast from '../components/Toast.astro';
+import '../styles/global.css';
+---
+
+<Layout title="پلنر هوشمند عروسی | ۴ آذر ۱۴۰۵">
+  <!-- هدر با روزشمار زنده و درصد پیشرفت -->
+  <Header />
+
+  <!-- محتوای اصلی -->
+  <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-6 space-y-6">
+    <!-- بنر هوشمند پیشنهاد روز بر اساس تاریخ -->
+    <SmartFocusBanner />
+
+    <!-- نوار جستجو و فیلترها -->
+    <FilterBar />
+
+    <!-- بخش کارت‌ها و فازهای برنامه‌ریزی (به صورت داینامیک از دیتای ذخیره‌شده رندر می‌شود) -->
+    <div id="planner-container" class="space-y-6">
+      <div class="py-12 text-center text-gray-400">
+        در حال بارگذاری اطلاعات پلنر از حافظه کوکی مرورگر...
+      </div>
+    </div>
+  </main>
+
+  <!-- مودال‌ها و نوتیفیکیشن -->
+  <TaskModal />
+  <SettingsModal />
+  <Toast />
+
+  <!-- کلاینت اسکریپت پلنر -->
+  <script>
+    import { initApp } from '../scripts/plannerStore';
+    
+    // راه‌اندازی پلنر بعد از بارگذاری کامل صفحه
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initApp);
+    } else {
+      initApp();
+    }
+  </script>
+</Layout>

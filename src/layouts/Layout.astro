@@ -1,0 +1,29 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { 
+  title = "پلنر هوشمند عروسی | ۴ آذر ۱۴۰۵", 
+  description = "برنامه‌ریزی دقیق، شمارش معکوس زنده و زمان‌بندی روز عروسی با ذخیره‌سازی ابری/کوکی مرورگر" 
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  
+  <!-- فونت وزیرمتن برای نمایش خوانا و مدرن فارسی -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-amber-200 selection:text-amber-900 bg-[#FDFBF7] text-[#1F2937]">
+  <slot />
+</body>
+</html>

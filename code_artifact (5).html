@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پلنر هوشمند عروسی | ۴ آذر ۱۴۰۵</title>
+    
+    <!-- فونت وزیرمتن از Google Fonts برای نمایش خوانا و مدرن فارسی -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Vazirmatn', 'system-ui', '-apple-system', 'sans-serif'],
+                    },
+                    colors: {
+                        ivory: {
+                            50: '#FDFBF7',
+                            100: '#F8F4EC',
+                            200: '#EFE6D5',
+                        },
+                        champagne: {
+                            400: '#D4AF37',
+                            500: '#C59B27',
+                            600: '#A67C1E',
+                        },
+                        sage: {
+                            50: '#F4F7F4',
+                            100: '#E3EBE3',
+                            600: '#4A6B53',
+                            700: '#38523F',
+                        },
+                        rose: {
+                            50: '#FDF6F6',
+                            100: '#FBE8E8',
+                            600: '#B85D6F',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: #FDFBF7;
+            color: #1F2937;
+            overflow-x: hidden;
+        }
+
+        /* استایل اختصاصی اسکرول‌بار */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F8F4EC;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D6CBB8;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #C59B27;
+        }
+
+        /* انیمیشن نرم برای کارت‌ها و مودال */
+        .fade-in {
+            animation: fadeIn 0.25s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* استایل چاپ (Print) تمیز برای ارسال به ساقدوش‌ها و مدیر برنامه */
+        @media print {
+            body {
+                background-color: #FFFFFF !important;
+                color: #000000 !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+            .shadow-sm, .shadow-md, .shadow-lg {
+                box-shadow: none !important;
+            }
+            .border {
+                border-color: #D1D5DB !important;
+            }
+            .page-break {
+                page-break-before: always;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-amber-200 selection:text-amber-900">
+
+    <!-- هدر اصلی و شمارش معکوس -->
+    <header class="bg-gradient-to-l from-ivory-100 via-white to-ivory-100 border-b border-amber-200/70 sticky top-0 z-30 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 py-3 sm:py-4">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                
+                <!-- عنوان و تاریخ مراسم -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 text-white flex items-center justify-center shadow-md shrink-0">
+                            <!-- آیکون حلقه ازدواج SVG -->
+                            <svg class="w-6 h-6 sm:w-7 sm:h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3l2.5 3.5L12 10 9.5 6.5 12 3z" />
+                                <circle cx="9.5" cy="14.5" r="5" />
+                                <circle cx="14.5" cy="14.5" r="5" />
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <h1 class="text-lg sm:text-xl font-extrabold text-gray-900 tracking-tight">پلنر هوشمند عروسی</h1>
+                                <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">
+                                    ۴ آذر ۱۴۰۵
+                                </span>
+                            </div>
+                            <p class="text-xs sm:text-sm text-gray-500 mt-0.5" id="wedding-gregorian-label">
+                                چهارشنبه ۴ آذر ۱۴۰۵ (۲۵ نوامبر ۲۰۲۶) • شروع تالار ۱۸:۰۰ | ورود ۲۰:۰۰
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- دکمه تنظیم تاریخ شبیه‌سازی (برای تست روزهای مختلف) -->
+                    <button onclick="openSettingsModal()" title="تنظیم تاریخ یا بازنشانی" class="no-print lg:hidden p-2.5 rounded-xl bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 active:scale-95 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- باکس شمارش معکوس و پیشرفت -->
+                <div class="flex flex-wrap items-center justify-between sm:justify-end gap-3">
+                    <!-- شمارش معکوس زنده -->
+                    <div class="flex items-center gap-2 bg-white border border-amber-200/80 rounded-2xl px-3 py-2 shadow-sm">
+                        <div class="text-center px-2 border-l border-gray-100">
+                            <span id="cd-days" class="block text-lg sm:text-xl font-black text-amber-700 leading-none">0</span>
+                            <span class="text-[11px] text-gray-500 font-medium">روز</span>
+                        </div>
+                        <div class="text-center px-2 border-l border-gray-100">
+                            <span id="cd-hours" class="block text-lg sm:text-xl font-black text-gray-800 leading-none">0</span>
+                            <span class="text-[11px] text-gray-500 font-medium">ساعت</span>
+                        </div>
+                        <div class="text-center px-2">
+                            <span id="cd-minutes" class="block text-lg sm:text-xl font-black text-gray-800 leading-none">0</span>
+                            <span class="text-[11px] text-gray-500 font-medium">دقیقه</span>
+                        </div>
+                        <div class="pr-2 border-r border-amber-100">
+                            <span id="countdown-badge" class="inline-block text-xs font-bold px-2.5 py-1 rounded-xl bg-sage-100 text-sage-700">
+                                در حال محاسبه...
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- دکمه‌های عملیاتی دسکتاپ -->
+                    <div class="no-print hidden lg:flex items-center gap-2">
+                        <button onclick="openAddModal()" class="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-sage-600 hover:bg-sage-700 text-white text-sm font-semibold shadow-sm transition active:scale-95">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                            <span>افزودن کار جدید</span>
+                        </button>
+                        <button onclick="window.print()" class="flex items-center gap-1.5 px-3 py-2.5 rounded-xl bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 text-sm font-medium transition" title="چاپ یا ذخیره PDF برنامه">
+                            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                            <span>چاپ برنامه</span>
+                        </button>
+                        <button onclick="openSettingsModal()" class="p-2.5 rounded-xl bg-white hover:bg-gray-50 text-gray-600 border border-gray-200 transition" title="تنظیمات و بازنشانی">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- نوار پیشرفت کلی آماده‌سازی -->
+            <div class="mt-3 pt-2.5 border-t border-amber-100/80 flex items-center gap-3">
+                <span class="text-xs font-semibold text-gray-600 shrink-0">پیشرفت آماده‌سازی:</span>
+                <div class="flex-1 h-2.5 bg-amber-100/80 rounded-full overflow-hidden">
+                    <div id="overall-progress-bar" class="h-full bg-gradient-to-l from-sage-600 to-amber-500 rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+                <span id="overall-progress-text" class="text-xs font-bold text-gray-800 shrink-0">۰٪ (۰ از ۰)</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- محتوای اصلی -->
+    <main class="flex-1 max-w-6xl w-full mx-auto px-4 py-6 space-y-6">
+
+        <!-- بنر پیشنهاد هوشمند امروز (بر اساس روزهای باقی‌مانده تا ۴ آذر) -->
+        <section id="smart-focus-banner" class="bg-white rounded-3xl border-2 border-amber-300/80 shadow-sm p-4 sm:p-6 relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-32 h-32 bg-amber-100/40 rounded-full -translate-x-10 -translate-y-10 pointer-events-none"></div>
+            <div class="relative flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="space-y-1.5">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold">
+                        <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
+                        <span>پیشنهاد هوشمند امروز بر اساس زمان باقی‌مانده</span>
+                    </div>
+                    <h2 id="smart-focus-title" class="text-lg sm:text-xl font-extrabold text-gray-900">
+                        در حال تحلیل برنامه شما...
+                    </h2>
+                    <p id="smart-focus-desc" class="text-sm text-gray-600 leading-relaxed max-w-3xl">
+                        بر اساس تاریخ امروز و فاصله تا ۴ آذر، کارهای اولویت‌دار این بازه زمانی در پایین مشخص شده‌اند.
+                    </p>
+                </div>
+                <div class="no-print flex flex-wrap items-center gap-2 shrink-0">
+                    <button onclick="filterBySmartFocus()" class="px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-sm font-bold shadow-sm transition active:scale-95">
+                        نمایش کارهای اولویت امروز
+                    </button>
+                    <button onclick="jumpToWeddingDay()" class="px-4 py-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-sm font-bold transition active:scale-95">
+                        تایم‌لاین ساعتی ۴ آذر
+                    </button>
+                </div>
+            </div>
+
+            <!-- پیش‌نمایش سریع ۳ کار فوری امروز -->
+            <div id="smart-quick-tasks" class="mt-4 pt-4 border-t border-gray-100 grid grid-cols-1 md:grid-cols-3 gap-3">
+                <!-- به صورت داینامیک پر می‌شود -->
+            </div>
+        </section>
+
+        <!-- نوار ابزار فیلتر، جستجو و دسته‌بندی -->
+        <section class="no-print bg-white rounded-2xl border border-gray-200/80 p-3 sm:p-4 shadow-sm space-y-3">
+            <div class="flex flex-col md:flex-row gap-3">
+                <!-- جستجو -->
+                <div class="relative flex-1">
+                    <svg class="w-5 h-5 text-gray-400 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                    <input type="text" id="search-input" oninput="renderPlanner()" placeholder="جستجو در کارها، ساعت‌ها، تالار، آرایشگاه، مدارک..." class="w-full pr-10 pl-4 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-sm focus:bg-white focus:border-amber-500 focus:ring-2 focus:ring-amber-200 outline-none transition">
+                </div>
+
+                <!-- فیلتر وضعیت -->
+                <div class="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0">
+                    <button onclick="setFilterStatus('all')" data-filter="all" class="filter-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition bg-gray-900 text-white">
+                        همه کارها
+                    </button>
+                    <button onclick="setFilterStatus('focus')" data-filter="focus" class="filter-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition bg-gray-100 text-gray-700 hover:bg-gray-200">
+                        فقط اولویت امروز
+                    </button>
+                    <button onclick="setFilterStatus('pending')" data-filter="pending" class="filter-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition bg-gray-100 text-gray-700 hover:bg-gray-200">
+                        انجام‌نشده‌ها
+                    </button>
+                    <button onclick="setFilterStatus('completed')" data-filter="completed" class="filter-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition bg-gray-100 text-gray-700 hover:bg-gray-200">
+                        تکمیل‌شده‌ها
+                    </button>
+                </div>
+            </div>
+
+            <!-- فیلتر مسئول انجام کار و دسته‌بندی -->
+            <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-gray-100 text-xs">
+                <div class="flex flex-wrap items-center gap-1.5">
+                    <span class="text-gray-500 font-medium ml-1">مسئول:</span>
+                    <button onclick="setOwnerFilter('all')" data-owner="all" class="owner-btn px-2.5 py-1 rounded-lg font-semibold bg-amber-100 text-amber-900">همه</button>
+                    <button onclick="setOwnerFilter('مشترک')" data-owner="مشترک" class="owner-btn px-2.5 py-1 rounded-lg font-medium bg-gray-50 text-gray-600 hover:bg-gray-100">عروس و داماد</button>
+                    <button onclick="setOwnerFilter('عروس')" data-owner="عروس" class="owner-btn px-2.5 py-1 rounded-lg font-medium bg-gray-50 text-gray-600 hover:bg-gray-100">عروس خانم</button>
+                    <button onclick="setOwnerFilter('داماد')" data-owner="داماد" class="owner-btn px-2.5 py-1 rounded-lg font-medium bg-gray-50 text-gray-600 hover:bg-gray-100">آقا داماد</button>
+                    <button onclick="setOwnerFilter('خانواده/ساقدوش')" data-owner="خانواده/ساقدوش" class="owner-btn px-2.5 py-1 rounded-lg font-medium bg-gray-50 text-gray-600 hover:bg-gray-100">ساقدوش / خانواده</button>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button onclick="openAddModal()" class="lg:hidden inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-sage-600 text-white font-semibold">
+                        <span>+ افزودن مورد</span>
+                    </button>
+                    <button onclick="window.print()" class="lg:hidden inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-gray-100 text-gray-700 font-semibold">
+                        <span>چاپ</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- کانتینر اصلی فازهای زمانی و تایم‌لاین روز عروسی -->
+        <div id="planner-container" class="space-y-8">
+            <!-- فازها و تایم‌لاین در اینجا رندر می‌شوند -->
+        </div>
+
+    </main>
+
+    <!-- فوتر -->
+    <footer class="no-print bg-white border-t border-gray-200/80 py-5 mt-12">
+        <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
+            <p>تمامی تغییرات به صورت خودکار در حافظه مرورگر شما ذخیره می‌شوند. با آرزوی خوشبختی در ۴ آذر ۱۴۰۵ ❤️</p>
+            <div class="flex items-center gap-4">
+                <button onclick="exportJsonData()" class="hover:text-amber-700 underline">خروجی پشتیبان (JSON)</button>
+                <button onclick="openSettingsModal()" class="hover:text-rose-600 underline">بازنشانی اطلاعات اولیه</button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- مودال افزودن / ویرایش تسک یا رویداد -->
+    <div id="task-modal" class="no-print fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-xs p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl border border-gray-100 fade-in max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+                <h3 id="modal-title" class="text-lg font-extrabold text-gray-900">افزودن برنامه یا تسک جدید</h3>
+                <button onclick="closeTaskModal()" class="p-2 rounded-xl text-gray-400 hover:bg-gray-100 hover:text-gray-700">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <form id="task-form" onsubmit="saveTaskForm(event)" class="space-y-4 mt-4">
+                <input type="hidden" id="edit-task-id">
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1.5">عنوان کار یا رویداد *</label>
+                    <input type="text" id="task-title" required placeholder="مثلاً: تحویل دسته گل از گلفروشی یا یادآوری شاباش" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-amber-500 focus:ring-2 focus:ring-amber-200 outline-none">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1.5">فاز زمانی *</label>
+                        <select id="task-phase" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm bg-white focus:border-amber-500 outline-none">
+                            <option value="phase-week">فاز ۱: هفته آخر تا ۴ روز مانده</option>
+                            <option value="phase-3days">فاز ۲: ۳ تا ۲ روز مانده به عروسی</option>
+                            <option value="phase-1day">فاز ۳: ۱ روز مانده (۳ آذر - آماده‌سازی نهایی)</option>
+                            <option value="phase-wedding-day">فاز ۴: روز عروسی (۴ آذر - تایم‌لاین ساعتی)</option>
+                            <option value="phase-after">فاز ۵: روز بعد از مراسم (۵ آذر به بعد)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1.5">ساعت دقیق (اختیاری - برای روز عروسی عالیه)</label>
+                        <input type="text" id="task-time" placeholder="مثلاً 04:00 یا 20:00 یا صبح" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-amber-500 outline-none" dir="ltr">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1.5">دسته‌بندی</label>
+                        <select id="task-category" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm bg-white focus:border-amber-500 outline-none">
+                            <option value="تالار و پذیرایی">تالار و پذیرایی</option>
+                            <option value="آرایشگاه و لباس">آرایشگاه و لباس</option>
+                            <option value="آتلیه و رسانه">آتلیه و رسانه</option>
+                            <option value="گل‌آرایی و ماشین">گل‌آرایی و ماشین</option>
+                            <option value="مالی و مدارک">مالی و مدارک</option>
+                            <option value="کیف اضطراری">کیف اضطراری</option>
+                            <option value="اجرای مراسم">اجرای مراسم</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1.5">مسئول انجام</label>
+                        <select id="task-owner" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm bg-white focus:border-amber-500 outline-none">
+                            <option value="مشترک">مشترک (عروس و داماد)</option>
+                            <option value="عروس">عروس خانم</option>
+                            <option value="داماد">آقا داماد</option>
+                            <option value="خانواده/ساقدوش">خانواده / ساقدوش</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1.5">اولویت</label>
+                        <select id="task-priority" class="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm bg-white focus:border-amber-500 outline-none">
+                            <option value="high">فوری و حیاتی</option>
+                            <option value="medium" selected>معمولی</option>
+                            <option value="low">مکمل</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1.5">جزئیات / یادداشت / شماره تماس هماهنگی</label>
+                    <textarea id="task-notes" rows="3" placeholder="توضیحات تکمیلی، آدرس یا نکات مهم این بخش..." class="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 text-sm focus:border-amber-500 outline-none"></textarea>
+                </div>
+
+                <div class="flex items-center justify-end gap-2 pt-3 border-t border-gray-100">
+                    <button type="button" onclick="closeTaskModal()" class="px-4 py-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold transition">انصراف</button>
+                    <button type="submit" class="px-5 py-2.5 rounded-xl bg-sage-600 hover:bg-sage-700 text-white text-sm font-bold shadow-sm transition">ذخیره در پلنر</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- مودال تنظیمات، شبیه‌سازی تاریخ و بازنشانی -->
+    <div id="settings-modal" class="no-print fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-xs p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-gray-100 fade-in">
+            <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+                <h3 class="text-lg font-extrabold text-gray-900">تنظیمات و شبیه‌سازی زمان</h3>
+                <button onclick="closeSettingsModal()" class="p-2 rounded-xl text-gray-400 hover:bg-gray-100">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <div class="space-y-4 mt-4 text-sm">
+                <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200/80 space-y-2">
+                    <p class="font-bold text-amber-900 text-xs">تست هوشمند روزهای باقی‌مانده:</p>
+                    <p class="text-xs text-amber-800 leading-relaxed">
+                        تاریخ عروسی روی <strong>۴ آذر ۱۴۰۵ (۲۵ نوامبر ۲۰۲۶)</strong> تنظیم شده است. می‌توانید برای تست، تاریخ امروز را شبیه‌سازی کنید تا ببینید پلنر در هر روز چه پیشنهادی می‌دهد:
+                    </p>
+                    <div class="grid grid-cols-2 gap-2 pt-1">
+                        <button onclick="setSimulatedDate(null)" class="px-3 py-2 rounded-xl bg-white border border-amber-300 text-xs font-bold text-gray-800 hover:bg-amber-100">تاریخ واقعی سیستم</button>
+                        <button onclick="setSimulatedDate('2026-11-22T10:00:00')" class="px-3 py-2 rounded-xl bg-white border border-amber-300 text-xs font-bold text-gray-800 hover:bg-amber-100">۳ روز مانده (۱ آذر)</button>
+                        <button onclick="setSimulatedDate('2026-11-24T12:00:00')" class="px-3 py-2 rounded-xl bg-white border border-amber-300 text-xs font-bold text-gray-800 hover:bg-amber-100">۱ روز مانده (۳ آذر)</button>
+                        <button onclick="setSimulatedDate('2026-11-25T03:45:00')" class="px-3 py-2 rounded-xl bg-rose-600 text-white text-xs font-bold hover:bg-rose-700">صبح عروسی (۴ آذر)</button>
+                    </div>
+                </div>
+
+                <div class="pt-2 border-t border-gray-100">
+                    <p class="text-xs font-bold text-gray-700 mb-2">مدیریت داده‌ها:</p>
+                    <div id="reset-confirm-box" class="hidden p-3 rounded-xl bg-rose-50 border border-rose-200 mb-2">
+                        <p class="text-xs text-rose-800 font-semibold mb-2">آیا مطمئن هستید؟ تمام تغییرات شما پاک شده و لیست اولیه ۴ آذر بازگردانی می‌شود.</p>
+                        <div class="flex gap-2">
+                            <button onclick="confirmResetData()" class="px-3 py-1.5 rounded-lg bg-rose-600 text-white text-xs font-bold">بله، بازنشانی شود</button>
+                            <button onclick="toggleResetConfirm(false)" class="px-3 py-1.5 rounded-lg bg-white text-gray-700 text-xs font-semibold border">انصراف</button>
+                        </div>
+                    </div>
+                    <button id="reset-trigger-btn" onclick="toggleResetConfirm(true)" class="w-full py-2.5 rounded-xl border border-rose-200 text-rose-700 hover:bg-rose-50 text-xs font-bold transition">
+                        بازنشانی به دیتای پیش‌فرض عروسی ۴ آذر
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- نوتیفیکیشن Toast -->
+    <div id="toast" class="no-print fixed bottom-5 left-1/2 -translate-x-1/2 z-50 hidden bg-gray-900 text-white text-xs sm:text-sm font-medium px-4 py-3 rounded-2xl shadow-xl items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+        <span id="toast-message">تغییرات ذخیره شد</span>
+    </div>
+
+    <script>
+        // =========================================================================
+        // تنظیمات اصلی تاریخ عروسی: ۴ آذر ۱۴۰۵ معادل ۲۵ نوامبر ۲۰۲۶ ساعت ۱۸:۰۰
+        // =========================================================================
+        const WEDDING_DATE_ISO = '2026-11-25T18:00:00';
+        const WEDDING_DAY_START_ISO = '2026-11-25T00:00:00';
+        const STORAGE_KEY = 'persian_wedding_planner_4azar_v1';
+
+        // تعریف فازهای زمانی پلنر
+        const PHASES = [
+            {
+                id: 'phase-week',
+                title: 'فاز ۱: هفته آخر و هماهنگی‌های نهایی (۷ تا ۴ روز مانده)',
+                subtitle: 'تثبیت نهایی با تالار، آتلیه، لباس‌ها و لیست مهمانان',
+                badge: '۱۷ تا ۳۰ آبان',
+                minDays: 4,
+                maxDays: 999,
+                accentColor: 'amber'
+            },
+            {
+                id: 'phase-3days',
+                title: 'فاز ۲: سه تا دو روز مانده به عروسی (۱ و ۲ آذر)',
+                subtitle: 'کارهای زیبایی، تحویل گرفتن لباس‌ها و چک کردن جزئیات',
+                badge: '۱ و ۲ آذر',
+                minDays: 2,
+                maxDays: 3,
+                accentColor: 'sage'
+            },
+            {
+                id: 'phase-1day',
+                title: 'فاز ۳: یک روز قبل از عروسی (چهارشنبه ۳ آذر)',
+                subtitle: 'آماده‌سازی کیف اضطراری، گل ماشین، پاکت‌های تسویه و خواب زودهنگام',
+                badge: '۳ آذر (روز قبل)',
+                minDays: 1,
+                maxDays: 1,
+                accentColor: 'amber'
+            },
+            {
+                id: 'phase-wedding-day',
+                title: 'فاز ۴: تایم‌لاین ساعت‌به‌ساعت روز عروسی (پنج‌شنبه ۴ آذر)',
+                subtitle: 'از بیدارباش ۳:۳۰ و آرایشگاه ۴:۰۰ صبح تا شروع مراسم ۱۸:۰۰ و ورود باشکوه ۲۰:۰۰',
+                badge: 'روز موعود • ۴ آذر',
+                minDays: 0,
+                maxDays: 0,
+                isTimeline: true,
+                accentColor: 'rose'
+            },
+            {
+                id: 'phase-after',
+                title: 'فاز ۵: بعد از مراسم (۵ آذر به بعد)',
+                subtitle: 'تحویل لباس‌ها، تسویه نهایی آتلیه و انتخاب عکس‌های آلبوم',
+                badge: '۵ آذر به بعد',
+                minDays: -999,
+                maxDays: -1,
+                accentColor: 'sage'
+            }
+        ];
+
+        // =========================================================================
+        // دیتای اولیه کامل و واقعی برای عروسی ۴ آذر
+        // =========================================================================
+        const DEFAULT_TASKS = [
+            // --- فاز ۱: هفته آخر ---
+            {
+                id: 't-101',
+                phase: 'phase-week',
+                time: 'هماهنگی روزانه',
+                title: 'تایید نهایی تعداد مهمانان و چیدمان میزها با مدیر تالار',
+                category: 'تالار و پذیرایی',
+                owner: 'مشترک',
+                priority: 'high',
+                completed: false,
+                notes: 'اعلام آمار قطعی مهمانان، تایید منوی شام، چیدمان جایگاه عروس و داماد و تست سیستم صوتی و نورپردازی.'
+            },
+            {
+                id: 't-102',
+                phase: 'phase-week',
+                time: 'عصر',
+                title: 'پرو نهایی لباس عروس و کت‌وشلوار داماد + تست کفش‌ها',
+                category: 'آرایشگاه و لباس',
+                owner: 'مشترک',
+                priority: 'high',
+                completed: false,
+                notes: 'حتماً کفش عروسی را در خانه کمی بپوشید تا پا را نزند. یک جفت کفش تخت/کتانی سفید هم برای آخر شب و رقص آماده کنید.'
+            },
+            {
+                id: 't-103',
+                phase: 'phase-week',
+                time: 'هماهنگی تلفنی',
+                title: 'جلسه نهایی با تیم آتلیه و عکاسی برای سناریوی ۴ آذر',
+                category: 'آتلیه و رسانه',
+                owner: 'مشترک',
+                priority: 'high',
+                completed: false,
+                notes: 'هماهنگی ساعت حضور عکاس در آرایشگاه (صبح)، لوکیشن عمارت (۱۰:۳۰) و استقرار در تالار قبل از ساعت ۱۹:۴۵.'
+            },
+            {
+                id: 't-104',
+                phase: 'phase-week',
+                time: 'روزانه',
+                title: 'سفارش نهایی کیک عروسی، شیرینی تالار و گل‌آرایی',
+                category: 'گل‌آرایی و ماشین',
+                owner: 'داماد',
+                priority: 'medium',
+                completed: false,
+                notes: 'تایید مدل دسته گل عروس (تحویل ساعت ۹:۳۰ صبح ۴ آذر) و رزرو نوبت گل‌آرایی ماشین عروس.'
+            },
+            {
+                id: 't-105',
+                phase: 'phase-week',
+                time: 'عصر',
+                title: 'انتخاب لیست آهنگ‌های کلیدی با دی‌جی / گروه موزیک',
+                category: 'اجرای مراسم',
+                owner: 'مشترک',
+                priority: 'medium',
+                completed: false,
+                notes: 'آهنگ ورود ساعت ۲۰:۰۰، آهنگ رقص تانگو (رقص اول)، آهنگ برش کیک و لیست آهنگ‌های ممنوعه.'
+            },
+
+            // --- فاز ۲: سه تا دو روز مانده ---
+            {
+                id: 't-201',
+                phase: 'phase-3days',
+                time: 'صبح تا عصر',
+                title: 'تحویل گرفتن لباس عروس، تور، تاج و کت‌وشلوار اتوشده',
+                category: 'آرایشگاه و لباس',
+                owner: 'مشترک',
+                priority: 'high',
+                completed: false,
+                notes: 'بررسی سلامت زیپ، دکمه‌ها و کاور لباس‌ها. آویزان کردن لباس عروس در جای بلند تا چروک نشود.'
+            },
+            {
+                id: 't-202',
+                phase: 'phase-3days',
+                time: 'عصر',
+                title: 'انجام خدمات زیبایی پیش از مراسم (ناخن، اصلاح، پاکسازی ملایم)',
+                category: 'آرایشگاه و لباس',
+                owner: 'عروس',
+                priority: 'medium',
+                completed: false,
+                notes: 'فیکس کردن نهایی ساعت ۴:۰۰ صبح روز ۴ آذر با میکاپ‌آرتیست و شینیون‌کار.'
+            },
+            {
+                id: 't-203',
+                phase: 'phase-3days',
+                time: 'عصر',
+                title: 'آماده کردن پاکت‌های تسویه حساب و پول نقد شاباش',
+                category: 'مالی و مدارک',
+                owner: 'داماد',
+                priority: 'high',
+                completed: false,
+                notes: 'جداسازی دقیق مبالغ در پاکت‌های نام‌گذاری شده (تالار، موزیک، آتلیه، گل‌فروش، انعام پرسنل) + تراول و اسکناس نو برای شاباش.'
+            },
+
+            // --- فاز ۳: یک روز قبل از عروسی (۳ آذر) ---
+            {
+                id: 't-301',
+                phase: 'phase-1day',
+                time: 'صبح',
+                title: 'کارواش کامل ماشین عروس و تحویل به گل‌فروشی',
+                category: 'گل‌آرایی و ماشین',
+                owner: 'داماد',
+                priority: 'high',
+                completed: false,
+                notes: 'هماهنگی تحویل ماشین گل‌زده یا نصب گل‌های تازه صبح روز ۴ آذر تا گل‌ها شاداب بمانند.'
+            },
+            {
+                id: 't-302',
+                phase: 'phase-1day',
+                time: 'عصر',
+                title: 'بستن کیف اضطراری روز عروسی و چک کردن مدارک',
+                category: 'کیف اضطراری',
+                owner: 'عروس',
+                priority: 'high',
+                completed: false,
+                notes: 'محتویات: شناسنامه‌ها و عقدنامه، نخ و سوزن سفید/مشکی، سنجاق قفلی، چسب زخم، قرص مسکن، دستمال مرطوب، پاوربانک و شارژر، عطر، آینه کوچک، رژلب همرنگ.'
+            },
+            {
+                id: 't-303',
+                phase: 'phase-1day',
+                time: '۱۸:۰۰',
+                title: 'تحویل شیرینی، میوه یا اقلام سفارشی به انبار تالار',
+                category: 'تالار و پذیرایی',
+                owner: 'خانواده/ساقدوش',
+                priority: 'medium',
+                completed: false,
+                notes: 'گرفتن رسید تحویل از انباردار یا مدیر داخلی تالار.'
+            },
+            {
+                id: 't-304',
+                phase: 'phase-1day',
+                time: '۲۱:۰۰',
+                title: 'تنظیم زنگ هشدار روی ۳:۳۰ صبح و خواب آرام',
+                category: 'آرایشگاه و لباس',
+                owner: 'مشترک',
+                priority: 'high',
+                completed: false,
+                notes: 'نوشیدن آب کافی، پرهیز از غذای سنگین و شارژ کامل گوشی‌ها و پاوربانک.'
+            },
+
+            // --- فاز ۴: تایم‌لاین ساعت‌به‌ساعت روز عروسی (۴ آذر) ---
+            {
+                id: 'w-0330',
+                phase: 'phase-wedding-day',
+                time: '03:30',
+                title: 'بیدارباش صبح عروسی، دوش سریع و صبحانه مقوی',
+                category: 'آرایشگاه و لباس',
+                owner: 'عروس',
+                priority: 'high',
+                completed: false,
+                notes: 'حتماً صبحانه سبک ولی مقوی (مثل عسل، تخم‌مرغ یا نان و پنیر و گردو) میل کنید چون تا ظهر زمان محدود است. لباس دکمه‌دار یا زیپ‌دار بپوشید که موقع تعویض مو و میکاپ خراب نشود.'
+            },
+            {
+                id: 'w-0400',
+                phase: 'phase-wedding-day',
+                time: '04:00',
+                title: 'شروع نوبت آرایشگاه عروس (میکاپ و شینیون)',
+                category: 'آرایشگاه و لباس',
+                owner: 'عروس',
+                priority: 'high',
+                completed: false,
+                notes: 'حضور به‌موقع در سالن زیبایی. همزمان هماهنگی برای صبحانه/میان‌وعده عروس در سالن.'
+            },
+            {
+                id: 'w-0830',
+                phase: 'phase-wedding-day',
+                time: '08:30',
+                title: 'نوبت پیرایشگاه داماد و تحویل دسته گل طبیعی عروس',
+                category: 'گل‌آرایی و ماشین',
+                owner: 'داماد',
+                priority: 'high',
+                completed: false,
+                notes: 'داماد بعد از پیرایش، دسته گل عروس و گل کت داماد را از گل‌فروشی تحویل گرفته و به سمت سالن زیبایی حرکت می‌کند.'
+            },
+            {
+                id: 'w-0930',
+                phase: 'phase-wedding-day',
+                time: '09:30',
+                title: 'پوشیدن لباس عروس و ورود داماد به آرایشگاه (First Look)',
+                category: 'آرایشگاه و لباس',
+                owner: 'مشترک',
+                priority: 'high',
+                completed: false,
+                notes: 'عکاسی و فیلم‌برداری لحظه دیدار اول، تحویل دسته گل و چک نهایی استایل عروس و داماد.'
+            },
+            {
+                id: 'w-1030',
+                phase: 'phase-wedding-day',
+                time: '10:30',
+                title: 'حرکت به سمت عمارت / لوکیشن عکاسی و فرمالیته روز عروسی',
+                category: 'آتلیه و رسانه',
+                owner: 'مشترک',
+                priority: 'high',
+                completed: false,
+                notes: 'عکاسی و فیلم‌برداری فضای باز و عمارت. همراه داشتن آب معدنی، نی (برای خراب نشدن رژلب) و میان‌وعده سبک.'
+            },
+            {
+                id: 'w-1430',
+                phase: 'phase-wedding-day',
+                time: '14:30',
+                title: 'ناهار سبک، استراحت کوتاه و ترمیم میکاپ و مو',
+                category: 'آرایشگاه و لباس',
+                owner: 'مشترک',
+                priority: 'medium',
+                completed: false,
+                notes: 'تجدید آرایش، فیکس کردن موها و بررسی اتوی لباس قبل از ورود به مراسم اصلی.'
+            },
+            {
+                id: 'w-1630',
+                phase: 'phase-wedding-day',
+                time: '16:30',
+                title: 'حرکت به سمت تالار و هماهنگی نهایی پشت صحنه',
+                category: 'اجرای مراسم',
+                owner: 'مشترک',
+                priority: 'high',
+                completed: false,
+                notes: 'استقرار در اتاق عقد/استراحت تالار. هماهنگی نهایی با مدیر تالار، دی‌جی و گروه فیلم‌برداری.'
+            },
+            {
+                id: 'w-1800',
+                phase: 'phase-wedding-day',
+                time: '18:00',
+                title: 'شروع رسمی مراسم و ورود مهمانان به تالار',
+                category: 'تالار و پذیرایی',
+                owner: 'خانواده/ساقدوش',
+                priority: 'high',
+                completed: false,
+                notes: 'استقبال خانواده‌ها از مهمانان، پذیرایی اولیه (چای، شیرینی، شربت) و پخش موسیقی لایت.'
+            },
+            {
+                id: 'w-1945',
+                phase: 'phase-wedding-day',
+                time: '19:45',
+                title: 'آماده‌باش تیم فیلم‌برداری و موزیک در ورودی تالار',
+                category: 'اجرای مراسم',
+                owner: 'خانواده/ساقدوش',
+                priority: 'high',
+                completed: false,
+                notes: 'تست نورپردازی مسیر ورود، آماده‌سازی دستگاه‌های آتش‌بازی/مه سرد و جمع کردن مهمانان در سالن.'
+            },
+            {
+                id: 'w-2000',
+                phase: 'phase-wedding-day',
+                time: '20:00',
+                title: 'ورود باشکوه عروس و داماد به تالار + رقص تانگو (رقص اول)',
+                category: 'اجرای مراسم',
+                owner: 'مشترک',
+                priority: 'high',
+                completed: false,
+                notes: 'ورود با آهنگ منتخب ساعت ۲۰:۰۰، نورپردازی ویژه و اجرای رقص دونفره اول.'
+            },
+            {
+                id: 'w-2130',
+                phase: 'phase-wedding-day',
+                time: '21:30',
+                title: 'سرو شام عروسی و سر زدن عروس و داماد به میز مهمانان',
+                category: 'تالار و پذیرایی',
+                owner: 'مشترک',
+                priority: 'medium',
+                completed: false,
+                notes: 'حتماً خود عروس و داماد هم شام میل کنند! سپس خوش‌آمدگویی صمیمی به میز مهمانان.'
+            },
+            {
+                id: 'w-2245',
+                phase: 'phase-wedding-day',
+                time: '22:45',
+                title: 'مراسم برش کیک، شاباش و عکس‌های یادگاری خانوادگی',
+                category: 'اجرای مراسم',
+                owner: 'مشترک',
+                priority: 'high',
+                completed: false,
+                notes: 'هماهنگی ساقدوش‌ها برای جمع‌آوری هدایا و پاکت‌های شاباش در کیف مخصوص.'
+            },
+            {
+                id: 'w-2345',
+                phase: 'phase-wedding-day',
+                time: '23:45',
+                title: 'خداحافظی با مهمانان، تحویل هدایا به فرد امین و بدرقه',
+                category: 'اجرای مراسم',
+                owner: 'مشترک',
+                priority: 'high',
+                completed: false,
+                notes: 'تحویل جعبه هدایا و وسایل باارزش به فرد معتمد خانواده، تسویه نهایی با عوامل تالار و حرکت به سمت خانه بخت.'
+            },
+
+            // --- فاز ۵: بعد از مراسم ---
+            {
+                id: 't-501',
+                phase: 'phase-after',
+                time: 'روز بعد',
+                title: 'عودت لباس عروس/داماد اجاره‌ای و تسویه نهایی آتلیه',
+                category: 'آرایشگاه و لباس',
+                owner: 'مشترک',
+                priority: 'medium',
+                completed: false,
+                notes: 'بررسی سلامت لباس‌ها قبل از تحویل به مزون و پیگیری زمان تحویل فایل‌های خام و آلبوم عروسی.'
+            }
+        ];
+
+        // =========================================================================
+        // وضعیت برنامه (State)
+        // =========================================================================
+        let tasks = [];
+        let currentFilterStatus = 'all'; // all | focus | pending | completed
+        let currentOwnerFilter = 'all';
+        let simulatedNow = null; // در صورت تنظیم کاربر برای تست روزهای مختلف
+
+        // =========================================================================
+        // راه‌اندازی اولیه
+        // =========================================================================
+        function initApp() {
+            loadTasks();
+            updateCountdownAndSmartBanner();
+            renderPlanner();
+
+            // به‌روزرسانی شمارش معکوس هر ۳۰ ثانیه
+            setInterval(() => {
+                updateCountdownAndSmartBanner();
+            }, 30000);
+        }
+
+        function getNow() {
+            return simulatedNow ? new Date(simulatedNow) : new Date();
+        }
+
+        function loadTasks() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        tasks = parsed;
+                        return;
+                    }
+                }
+            } catch (e) {
+                console.error('خطا در خواندن حافظه مرورگر:', e);
+            }
+            tasks = JSON.parse(JSON.stringify(DEFAULT_TASKS));
+            saveTasksToStorage();
+        }
+
+        function saveTasksToStorage() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+            } catch (e) {
+                console.error('خطا در ذخیره‌سازی:', e);
+            }
+        }
+
+        // تبدیل اعداد انگلیسی به فارسی برای نمایش زیباتر
+        function toPersianDigits(num) {
+            const persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+            return String(num).replace(/\d/g, d => persian[d]);
+        }
+
+        // =========================================================================
+        // محاسبه شمارش معکوس و پیشنهاد هوشمند امروز
+        // =========================================================================
+        function getDaysRemaining() {
+            const now = getNow();
+            const weddingStartOfDay = new Date(WEDDING_DAY_START_ISO);
+            const nowStartOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const diffTime = weddingStartOfDay - nowStartOfDay;
+            return Math.round(diffTime / (1000 * 60 * 60 * 24));
+        }
+
+        function updateCountdownAndSmartBanner() {
+            const now = getNow();
+            const target = new Date(WEDDING_DATE_ISO);
+            const diffMs = target - now;
+            const daysRemaining = getDaysRemaining();
+
+            const daysEl = document.getElementById('cd-days');
+            const hoursEl = document.getElementById('cd-hours');
+            const minsEl = document.getElementById('cd-minutes');
+            const badgeEl = document.getElementById('countdown-badge');
+
+            if (diffMs > 0) {
+                const totalMinutes = Math.floor(diffMs / 60000);
+                const d = Math.floor(totalMinutes / (60 * 24));
+                const h = Math.floor((totalMinutes % (60 * 24)) / 60);
+                const m = totalMinutes % 60;
+
+                daysEl.textContent = toPersianDigits(d);
+                hoursEl.textContent = toPersianDigits(h);
+                minsEl.textContent = toPersianDigits(m);
+
+                if (daysRemaining === 0) {
+                    badgeEl.textContent = 'امروز روز عروسی است! 🎉';
+                    badgeEl.className = 'inline-block text-xs font-bold px-2.5 py-1 rounded-xl bg-rose-100 text-rose-700';
+                } else {
+                    badgeEl.textContent = `${toPersianDigits(daysRemaining)} روز تا ۴ آذر`;
+                    badgeEl.className = 'inline-block text-xs font-bold px-2.5 py-1 rounded-xl bg-sage-100 text-sage-700';
+                }
+            } else {
+                daysEl.textContent = '۰';
+                hoursEl.textContent = '۰';
+                minsEl.textContent = '۰';
+                badgeEl.textContent = daysRemaining === 0 ? 'مراسم در حال برگزاری است ✨' : 'مراسم برگزار شد ❤️';
+                badgeEl.className = 'inline-block text-xs font-bold px-2.5 py-1 rounded-xl bg-amber-100 text-amber-800';
+            }
+
+            // تعیین فاز فعال امروز بر اساس تعداد روز باقی‌مانده
+            let activePhaseId = 'phase-week';
+            let smartTitle = '';
+            let smartDesc = '';
+
+            if (daysRemaining > 3) {
+                activePhaseId = 'phase-week';
+                smartTitle = `فقط ${toPersianDigits(daysRemaining)} روز تا ۴ آذر باقی مانده! الان وقت تثبیت هماهنگی‌های نهایی است.`;
+                smartDesc = 'امروز روی قطعی کردن آمار مهمانان تالار، پرو نهایی لباس‌ها و هماهنگی ساعت‌های روز عروسی با آتلیه و گل‌فروش تمرکز کنید.';
+            } else if (daysRemaining >= 2 && daysRemaining <= 3) {
+                activePhaseId = 'phase-3days';
+                smartTitle = `${toPersianDigits(daysRemaining)} روز مانده به عروسی: زمان تحویل لباس‌ها و آماده‌سازی مالی!`;
+                smartDesc = 'لباس عروس و کت‌وشلوار را تحویل بگیرید، پاکت‌های تسویه عوامل و پول شاباش را آماده کنید و کارهای زیبایی را نهایی کنید.';
+            } else if (daysRemaining === 1) {
+                activePhaseId = 'phase-1day';
+                smartTitle = 'فردا عروسیه! (۳ آذر): روز آماده‌سازی نهایی و بستن کیف اضطراری';
+                smartDesc = 'ماشین عروس را به گل‌فروشی بسپارید، کیف اضطراری و شناسنامه‌ها را چک کنید و امشب زود بخوابید تا برای ساعت ۳:۳۰ صبح سرحال باشید.';
+            } else if (daysRemaining === 0) {
+                activePhaseId = 'phase-wedding-day';
+                smartTitle = 'مبارک باشه! امروز ۴ آذر روز عروسی شماست 💍✨';
+                smartDesc = 'طبق تایم‌لاین ساعتی پیش بروید: ۴:۰۰ صبح آرایشگاه، ۱۰:۳۰ عمارت عکاسی، ۱۸:۰۰ شروع مراسم در تالار و ۲۰:۰۰ ورود باشکوه شما.';
+            } else {
+                activePhaseId = 'phase-after';
+                smartTitle = 'پیوندتان مبارک! کارهای پس از مراسم (۵ آذر به بعد)';
+                smartDesc = 'عودت لباس‌های اجاره‌ای، تحویل هدایا و پیگیری فایل‌های عکس و فیلم آتلیه در این بخش قرار دارند.';
+            }
+
+            document.getElementById('smart-focus-title').textContent = smartTitle;
+            document.getElementById('smart-focus-desc').textContent = smartDesc;
+
+            // نمایش ۳ کار فوری اولویت‌دار همین فاز در بنر
+            const quickContainer = document.getElementById('smart-quick-tasks');
+            const phaseTasks = tasks.filter(t => t.phase === activePhaseId && !t.completed).slice(0, 3);
+
+            if (phaseTasks.length === 0) {
+                quickContainer.innerHTML = `
+                    <div class="col-span-3 p-3 rounded-2xl bg-sage-50 border border-sage-200 text-sage-800 text-xs sm:text-sm font-semibold flex items-center gap-2">
+                        <span>🎉 عالیه! تمام کارهای پیشنهادی این بازه زمانی تیک خورده‌اند.</span>
+                    </div>
+                `;
+            } else {
+                quickContainer.innerHTML = phaseTasks.map(t => `
+                    <div onclick="toggleTaskComplete('${t.id}')" class="cursor-pointer group p-3 rounded-2xl bg-ivory-50 hover:bg-amber-50/70 border border-amber-200/60 transition flex items-start gap-2.5">
+                        <div class="mt-0.5 w-5 h-5 rounded-lg border-2 border-amber-500 flex items-center justify-center shrink-0 group-hover:bg-amber-500 group-hover:text-white transition">
+                            <svg class="w-3.5 h-3.5 opacity-0 group-hover:opacity-100" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                        </div>
+                        <div class="min-w-0">
+                            <div class="flex items-center gap-1.5 mb-0.5">
+                                ${t.time ? `<span class="text-[11px] font-bold px-1.5 py-0.5 rounded bg-white text-amber-800 border border-amber-200">${toPersianDigits(t.time)}</span>` : ''}
+                                <span class="text-[11px] text-gray-500">${t.owner}</span>
+                            </div>
+                            <p class="text-xs sm:text-sm font-bold text-gray-800 line-clamp-2">${escapeHtml(t.title)}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function getActivePhaseId() {
+            const d = getDaysRemaining();
+            if (d > 3) return 'phase-week';
+            if (d >= 2) return 'phase-3days';
+            if (d === 1) return 'phase-1day';
+            if (d === 0) return 'phase-wedding-day';
+            return 'phase-after';
+        }
+
+        // =========================================================================
+        // رندر کامل پلنر و تایم‌لاین
+        // =========================================================================
+        function renderPlanner() {
+            updateProgressBar();
+            updateCountdownAndSmartBanner();
+
+            const container = document.getElementById('planner-container');
+            const searchQuery = document.getElementById('search-input').value.trim().toLowerCase();
+            const activePhaseId = getActivePhaseId();
+
+            let html = '';
+
+            PHASES.forEach(phase => {
+                // فیلتر کردن تسک‌های این فاز
+                let phaseTasks = tasks.filter(t => t.phase === phase.id);
+
+                // مرتب‌سازی ساعتی در تایم‌لاین روز عروسی
+                if (phase.isTimeline) {
+                    phaseTasks.sort((a, b) => (a.time || '99:99').localeCompare(b.time || '99:99'));
+                }
+
+                // اعمال فیلتر وضعیت
+                if (currentFilterStatus === 'focus' && phase.id !== activePhaseId) {
+                    return;
+                }
+                if (currentFilterStatus === 'pending') {
+                    phaseTasks = phaseTasks.filter(t => !t.completed);
+                } else if (currentFilterStatus === 'completed') {
+                    phaseTasks = phaseTasks.filter(t => t.completed);
+                }
+
+                // اعمال فیلتر مسئول
+                if (currentOwnerFilter !== 'all') {
+                    phaseTasks = phaseTasks.filter(t => t.owner === currentOwnerFilter);
+                }
+
+                // اعمال جستجو
+                if (searchQuery) {
+                    phaseTasks = phaseTasks.filter(t =>
+                        t.title.toLowerCase().includes(searchQuery) ||
+                        (t.notes && t.notes.toLowerCase().includes(searchQuery)) ||
+                        (t.category && t.category.toLowerCase().includes(searchQuery)) ||
+                        (t.time && t.time.toLowerCase().includes(searchQuery))
+                    );
+                }
+
+                // اگر در حالت جستجو هستیم و این فاز نتیجه‌ای ندارد، نمایش نده
+                if (searchQuery && phaseTasks.length === 0) {
+                    return;
+                }
+
+                const totalInPhase = tasks.filter(t => t.phase === phase.id).length;
+                const doneInPhase = tasks.filter(t => t.phase === phase.id && t.completed).length;
+                const isCurrentFocus = phase.id === activePhaseId;
+
+                // رنگ‌بندی هدر هر فاز
+                const headerBg = phase.isTimeline
+                    ? 'bg-gradient-to-l from-rose-50 via-amber-50/70 to-white border-rose-200'
+                    : (isCurrentFocus ? 'bg-gradient-to-l from-amber-50 to-white border-amber-300' : 'bg-white border-gray-200/80');
+
+                html += `
+                    <section id="section-${phase.id}" class="rounded-3xl border ${headerBg} shadow-sm overflow-hidden fade-in">
+                        <!-- هدر فاز -->
+                        <div class="p-4 sm:p-6 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <div class="flex flex-wrap items-center gap-2 mb-1">
+                                    <span class="text-xs font-extrabold px-3 py-1 rounded-full ${phase.isTimeline ? 'bg-rose-600 text-white' : 'bg-amber-100 text-amber-900'}">
+                                        ${phase.badge}
+                                    </span>
+                                    ${isCurrentFocus ? '<span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-sage-600 text-white">فاز فعال امروز</span>' : ''}
+                                    <span class="text-xs font-semibold text-gray-500">
+                                        (${toPersianDigits(doneInPhase)} از ${toPersianDigits(totalInPhase)} تکمیل شده)
+                                    </span>
+                                </div>
+                                <h3 class="text-base sm:text-lg font-extrabold text-gray-900">${phase.title}</h3>
+                                <p class="text-xs sm:text-sm text-gray-500 mt-0.5">${phase.subtitle}</p>
+                            </div>
+
+                            <button onclick="openAddModal('${phase.id}')" class="no-print self-start sm:self-center inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 text-xs font-bold shadow-2xs transition">
+                                <svg class="w-4 h-4 text-sage-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                                <span>افزودن به این بخش</span>
+                            </button>
+                        </div>
+
+                        <!-- لیست کارها یا تایم‌لاین -->
+                        <div class="p-4 sm:p-6 bg-white/60">
+                            ${phaseTasks.length === 0 ? `
+                                <div class="text-center py-8 text-gray-400 text-sm">
+                                    موردی با فیلتر فعلی در این بخش وجود ندارد.
+                                </div>
+                            ` : (phase.isTimeline ? renderTimelineItems(phaseTasks) : renderChecklistItems(phaseTasks))}
+                        </div>
+                    </section>
+                `;
+            });
+
+            if (!html) {
+                html = `
+                    <div class="bg-white rounded-3xl border border-gray-200 p-10 text-center space-y-3">
+                        <p class="text-gray-600 font-bold">هیچ موردی مطابق با جستجو یا فیلتر شما پیدا نشد.</p>
+                        <button onclick="resetFilters()" class="px-4 py-2 rounded-xl bg-amber-100 text-amber-900 text-xs font-bold">نمایش همه برنامه‌ها</button>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+        }
+
+        // رندر آیتم‌های چک‌لیست استاندارد (فازهای قبل و بعد عروسی)
+        function renderChecklistItems(items) {
+            return `
+                <div class="space-y-3">
+                    ${items.map(task => `
+                        <div class="group rounded-2xl border ${task.completed ? 'bg-gray-50/80 border-gray-200/70' : 'bg-white border-gray-200 hover:border-amber-300'} p-3.5 sm:p-4 transition shadow-2xs">
+                            <div class="flex items-start gap-3">
+                                <!-- چک‌باکس -->
+                                <button onclick="toggleTaskComplete('${task.id}')" aria-label="تغییر وضعیت انجام" class="mt-0.5 w-6 h-6 rounded-xl border-2 flex items-center justify-center shrink-0 transition ${task.completed ? 'bg-sage-600 border-sage-600 text-white' : 'border-gray-300 hover:border-amber-500 bg-white'}">
+                                    ${task.completed ? '<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>' : ''}
+                                </button>
+
+                                <!-- محتوا -->
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex flex-wrap items-center gap-2 mb-1">
+                                        ${task.time ? `<span class="text-xs font-bold px-2 py-0.5 rounded-lg bg-ivory-100 text-amber-900 border border-amber-200/70">⏰ ${toPersianDigits(escapeHtml(task.time))}</span>` : ''}
+                                        <span class="text-[11px] font-semibold px-2 py-0.5 rounded-lg bg-gray-100 text-gray-600">${escapeHtml(task.category)}</span>
+                                        <span class="text-[11px] font-semibold px-2 py-0.5 rounded-lg ${getOwnerBadgeClass(task.owner)}">${escapeHtml(task.owner)}</span>
+                                        ${task.priority === 'high' && !task.completed ? '<span class="text-[11px] font-bold px-2 py-0.5 rounded-lg bg-rose-50 text-rose-700 border border-rose-200">ضروری</span>' : ''}
+                                    </div>
+
+                                    <h4 class="text-sm sm:text-base font-bold ${task.completed ? 'line-through text-gray-400' : 'text-gray-900'}">
+                                        ${escapeHtml(task.title)}
+                                    </h4>
+
+                                    ${task.notes ? `<p class="text-xs sm:text-sm text-gray-600 mt-1.5 leading-relaxed bg-gray-50/80 p-2.5 rounded-xl border border-gray-100">${escapeHtml(task.notes)}</p>` : ''}
+                                </div>
+
+                                <!-- دکمه‌های ویرایش و حذف -->
+                                <div class="no-print flex items-center gap-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition">
+                                    <button onclick="openEditModal('${task.id}')" title="ویرایش" class="p-2 rounded-xl text-gray-400 hover:text-amber-700 hover:bg-amber-50 transition">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                    </button>
+                                    <button onclick="deleteTask('${task.id}')" title="حذف" class="p-2 rounded-xl text-gray-400 hover:text-rose-600 hover:bg-rose-50 transition">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // رندر اختصاصی تایم‌لاین ساعت‌به‌ساعت روز عروسی (۴ آذر)
+        function renderTimelineItems(items) {
+            return `
+                <div class="relative pr-6 sm:pr-8 border-r-2 border-rose-200 space-y-5 mr-2 sm:mr-4">
+                    ${items.map(task => {
+                        // برجسته‌سازی ساعت‌های کلیدی درخواست کاربر (۴ صبح، ۶ عصر، ۸ شب)
+                        const isMilestone = ['04:00', '18:00', '20:00'].includes(task.time);
+                        return `
+                            <div class="relative group">
+                                <!-- نقطه روی خط تایم‌لاین -->
+                                <span class="absolute -right-[33px] sm:-right-[41px] top-4 w-4 h-4 rounded-full border-4 border-white shadow-sm ${task.completed ? 'bg-sage-600' : (isMilestone ? 'bg-rose-600 ring-4 ring-rose-100' : 'bg-amber-500')}"></span>
+
+                                <div class="rounded-2xl border ${isMilestone && !task.completed ? 'border-rose-300 bg-rose-50/40' : (task.completed ? 'border-gray-200 bg-gray-50/70' : 'border-gray-200 bg-white hover:border-amber-300')} p-3.5 sm:p-4 transition shadow-2xs">
+                                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
+                                        <div class="flex flex-wrap items-center gap-2">
+                                            <span class="inline-flex items-center gap-1.5 text-sm sm:text-base font-black px-3 py-1 rounded-xl ${isMilestone ? 'bg-rose-600 text-white shadow-xs' : 'bg-amber-100 text-amber-900'}">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                                <span>ساعت ${toPersianDigits(escapeHtml(task.time || '--:--'))}</span>
+                                            </span>
+
+                                            <span class="text-xs font-semibold px-2.5 py-0.5 rounded-lg ${getOwnerBadgeClass(task.owner)}">${escapeHtml(task.owner)}</span>
+                                            <span class="text-xs font-medium text-gray-500 bg-white px-2 py-0.5 rounded-lg border border-gray-100">${escapeHtml(task.category)}</span>
+                                        </div>
+
+                                        <div class="no-print flex items-center gap-1 self-end sm:self-center">
+                                            <button onclick="openEditModal('${task.id}')" title="ویرایش ساعت یا متن" class="p-1.5 rounded-lg text-gray-400 hover:text-amber-700 hover:bg-amber-50">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                                            </button>
+                                            <button onclick="deleteTask('${task.id}')" title="حذف" class="p-1.5 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-start gap-3">
+                                        <button onclick="toggleTaskComplete('${task.id}')" class="mt-0.5 w-6 h-6 rounded-xl border-2 flex items-center justify-center shrink-0 transition ${task.completed ? 'bg-sage-600 border-sage-600 text-white' : 'border-gray-300 hover:border-rose-500 bg-white'}">
+                                            ${task.completed ? '<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>' : ''}
+                                        </button>
+
+                                        <div class="flex-1">
+                                            <h4 class="text-sm sm:text-base font-extrabold ${task.completed ? 'line-through text-gray-400' : 'text-gray-900'}">
+                                                ${escapeHtml(task.title)}
+                                            </h4>
+                                            ${task.notes ? `<p class="text-xs sm:text-sm text-gray-600 mt-1.5 leading-relaxed">${escapeHtml(task.notes)}</p>` : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+        }
+
+        function getOwnerBadgeClass(owner) {
+            if (owner === 'عروس') return 'bg-rose-50 text-rose-700 border border-rose-200/70';
+            if (owner === 'داماد') return 'bg-sky-50 text-sky-700 border border-sky-200/70';
+            if (owner === 'خانواده/ساقدوش') return 'bg-purple-50 text-purple-700 border border-purple-200/70';
+            return 'bg-sage-50 text-sage-700 border border-sage-200/70';
+        }
+
+        function updateProgressBar() {
+            const total = tasks.length;
+            const completed = tasks.filter(t => t.completed).length;
+            const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
+
+            document.getElementById('overall-progress-bar').style.width = `${percent}%`;
+            document.getElementById('overall-progress-text').textContent =
+                `${toPersianDigits(percent)}٪ (${toPersianDigits(completed)} از ${toPersianDigits(total)})`;
+        }
+
+        // =========================================================================
+        // عملیات CRUD (تیک زدن، افزودن، ویرایش، حذف)
+        // =========================================================================
+        function toggleTaskComplete(id) {
+            const idx = tasks.findIndex(t => t.id === id);
+            if (idx !== -1) {
+                tasks[idx].completed = !tasks[idx].completed;
+                saveTasksToStorage();
+                renderPlanner();
+                showToast(tasks[idx].completed ? 'عالی! انجام شد ✅' : 'به لیست در حال انجام برگشت');
+            }
+        }
+
+        function deleteTask(id) {
+            tasks = tasks.filter(t => t.id !== id);
+            saveTasksToStorage();
+            renderPlanner();
+            showToast('مورد از برنامه حذف شد');
+        }
+
+        function openAddModal(defaultPhase = null) {
+            document.getElementById('modal-title').textContent = 'افزودن کار یا رویداد جدید';
+            document.getElementById('edit-task-id').value = '';
+            document.getElementById('task-title').value = '';
+            document.getElementById('task-phase').value = defaultPhase || getActivePhaseId();
+            document.getElementById('task-time').value = '';
+            document.getElementById('task-category').value = 'تالار و پذیرایی';
+            document.getElementById('task-owner').value = 'مشترک';
+            document.getElementById('task-priority').value = 'medium';
+            document.getElementById('task-notes').value = '';
+
+            const modal = document.getElementById('task-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.getElementById('task-title').focus();
+        }
+
+        function openEditModal(id) {
+            const task = tasks.find(t => t.id === id);
+            if (!task) return;
+
+            document.getElementById('modal-title').textContent = 'ویرایش برنامه یا ساعت';
+            document.getElementById('edit-task-id').value = task.id;
+            document.getElementById('task-title').value = task.title;
+            document.getElementById('task-phase').value = task.phase;
+            document.getElementById('task-time').value = task.time || '';
+            document.getElementById('task-category').value = task.category || 'تالار و پذیرایی';
+            document.getElementById('task-owner').value = task.owner || 'مشترک';
+            document.getElementById('task-priority').value = task.priority || 'medium';
+            document.getElementById('task-notes').value = task.notes || '';
+
+            const modal = document.getElementById('task-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeTaskModal() {
+            const modal = document.getElementById('task-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function saveTaskForm(event) {
+            event.preventDefault();
+            const editId = document.getElementById('edit-task-id').value;
+            const title = document.getElementById('task-title').value.trim();
+            const phase = document.getElementById('task-phase').value;
+            const time = document.getElementById('task-time').value.trim();
+            const category = document.getElementById('task-category').value;
+            const owner = document.getElementById('task-owner').value;
+            const priority = document.getElementById('task-priority').value;
+            const notes = document.getElementById('task-notes').value.trim();
+
+            if (!title) return;
+
+            if (editId) {
+                const idx = tasks.findIndex(t => t.id === editId);
+                if (idx !== -1) {
+                    tasks[idx] = { ...tasks[idx], title, phase, time, category, owner, priority, notes };
+                }
+                showToast('تغییرات با موفقیت ذخیره شد');
+            } else {
+                const newTask = {
+                    id: 'custom-' + Date.now(),
+                    phase,
+                    time,
+                    title,
+                    category,
+                    owner,
+                    priority,
+                    completed: false,
+                    notes
+                };
+                tasks.push(newTask);
+                showToast('مورد جدید به پلنر اضافه شد');
+            }
+
+            saveTasksToStorage();
+            closeTaskModal();
+            renderPlanner();
+        }
+
+        // =========================================================================
+        // فیلترها و ناوبری سریع
+        // =========================================================================
+        function setFilterStatus(status) {
+            currentFilterStatus = status;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.dataset.filter === status) {
+                    btn.className = 'filter-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition bg-gray-900 text-white';
+                } else {
+                    btn.className = 'filter-btn px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition bg-gray-100 text-gray-700 hover:bg-gray-200';
+                }
+            });
+            renderPlanner();
+        }
+
+        function setOwnerFilter(owner) {
+            currentOwnerFilter = owner;
+            document.querySelectorAll('.owner-btn').forEach(btn => {
+                if (btn.dataset.owner === owner) {
+                    btn.className = 'owner-btn px-2.5 py-1 rounded-lg font-semibold bg-amber-100 text-amber-900';
+                } else {
+                    btn.className = 'owner-btn px-2.5 py-1 rounded-lg font-medium bg-gray-50 text-gray-600 hover:bg-gray-100';
+                }
+            });
+            renderPlanner();
+        }
+
+        function filterBySmartFocus() {
+            setFilterStatus('focus');
+            const activeId = getActivePhaseId();
+            const el = document.getElementById('section-' + activeId);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function jumpToWeddingDay() {
+            setFilterStatus('all');
+            setTimeout(() => {
+                const el = document.getElementById('section-phase-wedding-day');
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 50);
+        }
+
+        function resetFilters() {
+            document.getElementById('search-input').value = '';
+            setOwnerFilter('all');
+            setFilterStatus('all');
+        }
+
+        // =========================================================================
+        // تنظیمات، شبیه‌سازی تاریخ و خروجی پشتیبان
+        // =========================================================================
+        function openSettingsModal() {
+            toggleResetConfirm(false);
+            const modal = document.getElementById('settings-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeSettingsModal() {
+            const modal = document.getElementById('settings-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function setSimulatedDate(isoString) {
+            simulatedNow = isoString;
+            closeSettingsModal();
+            renderPlanner();
+            showToast(isoString ? 'تاریخ برای تست شبیه‌سازی شد' : 'بازگشت به تاریخ واقعی سیستم');
+        }
+
+        function toggleResetConfirm(show) {
+            document.getElementById('reset-confirm-box').classList.toggle('hidden', !show);
+            document.getElementById('reset-trigger-btn').classList.toggle('hidden', show);
+        }
+
+        function confirmResetData() {
+            tasks = JSON.parse(JSON.stringify(DEFAULT_TASKS));
+            saveTasksToStorage();
+            closeSettingsModal();
+            renderPlanner();
+            showToast('لیست پیش‌فرض عروسی ۴ آذر بازنشانی شد');
+        }
+
+        function exportJsonData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(tasks, null, 2));
+            const dlAnchor = document.createElement('a');
+            dlAnchor.setAttribute("href", dataStr);
+            dlAnchor.setAttribute("download", "wedding-planner-4azar.json");
+            document.body.appendChild(dlAnchor);
+            dlAnchor.click();
+            dlAnchor.remove();
+            showToast('فایل پشتیبان دانلود شد');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = msg;
+            toast.classList.remove('hidden');
+            toast.classList.add('flex');
+            clearTimeout(window._toastTimer);
+            window._toastTimer = setTimeout(() => {
+                toast.classList.add('hidden');
+                toast.classList.remove('flex');
+            }, 2600);
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        window.onload = initApp;
+    </script>
+</body>
+</html>
