@@ -1,70 +1,75 @@
 ---
 // Header.astro
 ---
-<header id="main-header" class="bg-gradient-to-l from-ivory-100 via-white to-ivory-100 border-b border-amber-200/70 sticky top-0 z-30 shadow-xs transition-transform duration-300 ease-in-out">
-  <div class="max-w-6xl mx-auto px-3 sm:px-4 py-2 sm:py-3.5">
-    <!-- بخش بالایی: لوگو، عنوان و دکمه‌های کنترلی -->
+<header id="main-header" class="bg-white/90 backdrop-blur-md border-b border-amber-200/60 sticky top-0 z-30 shadow-[0_2px_12px_rgba(180,140,80,0.06)] transition-transform duration-300 ease-in-out">
+  <div class="max-w-6xl mx-auto px-3 sm:px-4 py-2 sm:py-3">
+    <!-- بخش بالایی: لوگو، عنوان، روزشمار و دکمه‌ها -->
     <div class="flex items-center justify-between gap-2">
-      <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
-        <div class="w-9 h-9 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 text-white flex items-center justify-center shadow-sm shrink-0">
-          <!-- آیکون حلقه ازدواج SVG -->
-          <svg class="w-5 h-5 sm:w-7 sm:h-7" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3l2.5 3.5L12 10 9.5 6.5 12 3z" />
-            <circle cx="9.5" cy="14.5" r="5" />
-            <circle cx="14.5" cy="14.5" r="5" />
+      <!-- سمت راست: لوگو و تایپوگرافی شیک عروسی -->
+      <div class="flex items-center gap-2.5 min-w-0">
+        <div class="relative w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-tr from-amber-600 via-amber-500 to-amber-400 text-white flex items-center justify-center shadow-md shadow-amber-500/20 shrink-0 ring-2 ring-white">
+          <!-- حلقه ازدواج با نگین درخشان -->
+          <svg class="w-5 h-5 sm:w-6 sm:h-6 drop-shadow-xs" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 2l2 3.5L12 8 10 5.5 12 2z" />
+            <circle cx="9" cy="14" r="5" stroke-width="1.8" />
+            <circle cx="15" cy="14" r="5" stroke-width="1.8" />
           </svg>
+          <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-rose-500 rounded-full border-2 border-white animate-pulse"></span>
         </div>
+
         <div class="min-w-0">
           <div class="flex items-center gap-1.5 flex-wrap">
-            <h1 class="text-sm sm:text-xl font-extrabold text-gray-900 tracking-tight truncate">پلنر هوشمند عروسی</h1>
-            <span class="text-[10px] sm:text-xs font-bold px-1.5 py-0.5 rounded-md sm:rounded-full bg-amber-100 text-amber-800 border border-amber-200 whitespace-nowrap">
+            <h1 class="text-sm sm:text-lg font-black text-gray-900 tracking-tight truncate">پلنر عروسی</h1>
+            <span class="inline-flex items-center gap-1 text-[10px] sm:text-xs font-black px-2 py-0.5 rounded-full bg-gradient-to-r from-amber-100 to-amber-50 text-amber-900 border border-amber-200/80 shadow-2xs">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
               ۴ آذر ۱۴۰۵
             </span>
           </div>
-          <p class="text-[10px] sm:text-sm text-gray-500 truncate" id="wedding-gregorian-label">
-            شروع تالار ۱۸:۰۰ • ورود عروس و داماد ۲۰:۰۰
+          <p class="text-[10px] sm:text-xs text-gray-500 truncate mt-0.5 font-medium flex items-center gap-1.5" id="wedding-gregorian-label">
+            <span>تالار ۱۸:۰۰</span>
+            <span class="text-gray-300">•</span>
+            <span>ورود باشکوه ۲۰:۰۰</span>
           </p>
         </div>
       </div>
 
-      <!-- کنترل‌های هدر -->
-      <div class="flex items-center gap-1.5 shrink-0">
-        <!-- روزشمار فشرده در دسکتاپ -->
-        <div class="hidden sm:flex items-center gap-1.5 bg-white border border-amber-200/80 rounded-2xl px-3 py-1.5 shadow-2xs">
-          <div class="text-center px-1.5 border-l border-gray-100">
-            <span id="cd-days" class="block text-base sm:text-lg font-black text-amber-700 leading-none">0</span>
-            <span class="text-[10px] text-gray-500">روز</span>
+      <!-- سمت چپ: شمارش معکوس فشرده و دکمه‌ها -->
+      <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
+        <!-- روزشمار کپسولی دسکتاپ -->
+        <div class="hidden sm:flex items-center gap-1.5 bg-amber-50/70 border border-amber-200/80 rounded-2xl px-3 py-1.5 shadow-2xs">
+          <div class="text-center px-1.5 border-l border-amber-200/50">
+            <span id="cd-days" class="block text-base font-black text-amber-800 leading-none">0</span>
+            <span class="text-[9px] text-gray-500 font-semibold">روز</span>
           </div>
-          <div class="text-center px-1.5 border-l border-gray-100">
-            <span id="cd-hours" class="block text-base sm:text-lg font-black text-gray-800 leading-none">0</span>
-            <span class="text-[10px] text-gray-500">ساعت</span>
+          <div class="text-center px-1.5 border-l border-amber-200/50">
+            <span id="cd-hours" class="block text-base font-black text-gray-800 leading-none">0</span>
+            <span class="text-[9px] text-gray-500 font-semibold">ساعت</span>
           </div>
           <div class="text-center px-1.5">
-            <span id="cd-minutes" class="block text-base sm:text-lg font-black text-gray-800 leading-none">0</span>
-            <span class="text-[10px] text-gray-500">دقیقه</span>
+            <span id="cd-minutes" class="block text-base font-black text-gray-800 leading-none">0</span>
+            <span class="text-[9px] text-gray-500 font-semibold">دقیقه</span>
           </div>
-          <div class="pr-2 border-r border-amber-100">
-            <span id="countdown-badge" class="inline-block text-xs font-bold px-2 py-0.5 rounded-xl bg-sage-100 text-sage-700">
+          <div class="pr-2 border-r border-amber-200/60">
+            <span id="countdown-badge" class="inline-block text-[11px] font-bold px-2 py-0.5 rounded-xl bg-white text-sage-800 shadow-2xs border border-amber-100">
               در حال محاسبه...
             </span>
           </div>
         </div>
 
-        <!-- دکمه‌های دسکتاپ -->
+        <!-- کنترل‌های سریع دسکتاپ -->
         <div class="no-print hidden lg:flex items-center gap-2">
-          <button onclick="window.planner.openAddModal()" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-sage-600 hover:bg-sage-700 text-white text-xs sm:text-sm font-semibold shadow-xs transition active:scale-95">
+          <button onclick="window.planner.openAddModal()" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-gradient-to-r from-sage-600 to-sage-700 hover:from-sage-700 hover:to-sage-800 text-white text-xs font-bold shadow-sm shadow-sage-600/20 transition active:scale-95">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
-            <span>افزودن کار جدید</span>
+            <span>افزودن کار</span>
           </button>
-          <button onclick="window.print()" class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 text-xs sm:text-sm font-medium transition" title="چاپ یا ذخیره PDF برنامه">
+          <button onclick="window.print()" class="p-2 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-600 border border-gray-200 text-xs transition" title="چاپ یا ذخیره PDF">
             <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
-            <span>چاپ</span>
           </button>
         </div>
 
-        <!-- دکمه تنظیمات همه‌جا در دسترس -->
-        <button onclick="window.planner.openSettingsModal()" title="تنظیم تاریخ یا بازنشانی" class="no-print p-1.5 sm:p-2.5 rounded-xl bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 active:scale-95 transition">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <!-- دکمه تنظیمات گرد شیک -->
+        <button onclick="window.planner.openSettingsModal()" title="تنظیم تاریخ یا بازنشانی" class="no-print p-2 rounded-xl bg-gray-50 hover:bg-gray-100 active:bg-gray-200 text-gray-600 border border-gray-200/80 active:scale-95 transition shadow-2xs" aria-label="تنظیمات">
+          <svg class="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
@@ -72,35 +77,35 @@
       </div>
     </div>
 
-    <!-- ردیف اختصاصی موبایل برای روزشمار (بسیار تمیز، فشرده و کارتی) -->
-    <div class="sm:hidden mt-2 pt-1.5 border-t border-amber-100 flex items-center justify-between gap-1.5">
-      <div class="flex items-center gap-1 bg-white border border-amber-200/90 rounded-xl px-2 py-0.5 shadow-2xs">
-        <div class="text-center px-1 border-l border-gray-100">
-          <span id="cd-days-mobile" class="block text-sm font-black text-amber-700 leading-none">0</span>
-          <span class="text-[8px] text-gray-500 font-medium">روز</span>
+    <!-- ردیف اختصاصی موبایل: روزشمار شیک کپسولی با تم رزگلد/طلایی -->
+    <div class="sm:hidden mt-2 pt-1.5 border-t border-amber-100/70 flex items-center justify-between gap-1.5">
+      <div class="flex items-center gap-1 bg-gradient-to-r from-amber-50 to-orange-50/60 border border-amber-200/80 rounded-xl px-2 py-0.5 shadow-2xs">
+        <div class="text-center px-1 border-l border-amber-200/50">
+          <span id="cd-days-mobile" class="block text-xs font-black text-amber-800 leading-none">0</span>
+          <span class="text-[8px] text-gray-500 font-semibold">روز</span>
         </div>
-        <div class="text-center px-1 border-l border-gray-100">
-          <span id="cd-hours-mobile" class="block text-sm font-black text-gray-800 leading-none">0</span>
-          <span class="text-[8px] text-gray-500 font-medium">ساعت</span>
+        <div class="text-center px-1 border-l border-amber-200/50">
+          <span id="cd-hours-mobile" class="block text-xs font-black text-gray-800 leading-none">0</span>
+          <span class="text-[8px] text-gray-500 font-semibold">ساعت</span>
         </div>
         <div class="text-center px-1">
-          <span id="cd-minutes-mobile" class="block text-sm font-black text-gray-800 leading-none">0</span>
-          <span class="text-[8px] text-gray-500 font-medium">دقیقه</span>
+          <span id="cd-minutes-mobile" class="block text-xs font-black text-gray-800 leading-none">0</span>
+          <span class="text-[8px] text-gray-500 font-semibold">دقیقه</span>
         </div>
       </div>
 
-      <span id="countdown-badge-mobile" class="inline-block text-[10px] font-bold px-2 py-0.5 rounded-lg bg-amber-50 text-amber-800 border border-amber-200 truncate">
+      <span id="countdown-badge-mobile" class="inline-block text-[10px] font-bold px-2 py-0.5 rounded-lg bg-amber-100 text-amber-900 border border-amber-200 truncate">
         در حال محاسبه...
       </span>
     </div>
 
-    <!-- نوار پیشرفت کلی آماده‌سازی -->
-    <div class="mt-2 pt-1.5 border-t border-amber-100/70 flex items-center gap-2">
-      <span class="text-[10px] sm:text-xs font-semibold text-gray-600 shrink-0">پیشرفت:</span>
-      <div class="flex-1 h-2 sm:h-2.5 bg-amber-100/80 rounded-full overflow-hidden">
-        <div id="overall-progress-bar" class="h-full bg-gradient-to-l from-sage-600 to-amber-500 rounded-full transition-all duration-500" style="width: 0%"></div>
+    <!-- نوار پیشرفت باریک و چشم‌نواز -->
+    <div class="mt-2 pt-1.5 border-t border-amber-100/60 flex items-center gap-2">
+      <span class="text-[10px] font-bold text-gray-500 shrink-0">پیشرفت کل:</span>
+      <div class="flex-1 h-1.5 sm:h-2 bg-gray-100 rounded-full overflow-hidden p-0.5 ring-1 ring-black/5">
+        <div id="overall-progress-bar" class="h-full bg-gradient-to-r from-amber-500 via-rose-400 to-sage-500 rounded-full transition-all duration-700 shadow-xs" style="width: 0%"></div>
       </div>
-      <span id="overall-progress-text" class="text-[10px] sm:text-xs font-bold text-gray-800 shrink-0">۰٪</span>
+      <span id="overall-progress-text" class="text-[10px] font-black text-amber-800 shrink-0">۰٪</span>
     </div>
   </div>
 </header>

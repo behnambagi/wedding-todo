@@ -6,14 +6,14 @@ const WEDDING_DATE_ISO = '2026-11-25T18:00:00';
 const WEDDING_DAY_START_ISO = '2026-11-25T00:00:00';
 const COOKIE_STORAGE_KEY = 'persian_wedding_planner_cookie_v2';
 const LOCAL_STORAGE_KEY = 'persian_wedding_planner_4azar_v2';
-const COLLAPSED_PHASES_KEY = 'persian_wedding_collapsed_phases_v2';
+const ACTIVE_TAB_KEY = 'persian_wedding_active_tab_v2';
 
 let tasks: TaskItem[] = [];
 let simulatedNow: string | null = null;
 let currentFilterStatus: 'all' | 'focus' | 'pending' | 'completed' = 'all';
 let currentOwnerFilter: string = 'all';
+let activePhaseTab: string = 'phase-wedding-day'; // در حالت تب‌بندی، پیش‌فرض روی روز عروسی یا فاز فعال باز شود
 let toastTimer: any = null;
-let collapsedPhases: Set<string> = new Set();
 
 export function toPersianDigits(n: number | string | undefined | null): string {
   if (n === undefined || n === null) return '';
@@ -33,37 +33,6 @@ export function escapeHtml(str: string | undefined | null): string {
 
 export function getNow(): Date {
   return simulatedNow ? new Date(simulatedNow) : new Date();
-}
-
-/**
- * ذخیره فازهای جمع‌شده در لوکال استوریج برای راحتی کاربر در موبایل
- */
-export function saveCollapsedPhases(): void {
-  try {
-    localStorage.setItem(COLLAPSED_PHASES_KEY, JSON.stringify(Array.from(collapsedPhases)));
-  } catch (e) {}
-}
-
-export function loadCollapsedPhases(): void {
-  try {
-    const raw = localStorage.getItem(COLLAPSED_PHASES_KEY);
-    if (raw) {
-      const arr = JSON.parse(raw);
-      if (Array.isArray(arr)) {
-        collapsedPhases = new Set(arr);
-      }
-    }
-  } catch (e) {}
-}
-
-export function togglePhaseCollapse(phaseId: string): void {
-  if (collapsedPhases.has(phaseId)) {
-    collapsedPhases.delete(phaseId);
-  } else {
-    collapsedPhases.add(phaseId);
-  }
-  saveCollapsedPhases();
-  renderPlanner();
 }
 
 /**
@@ -292,7 +261,7 @@ export function renderChecklistItems(phaseTasks: TaskItem[]): string {
   if (phaseTasks.length === 0) {
     return `
       <div class="p-6 text-center text-gray-400 text-xs sm:text-sm">
-        موردی مطابق با فیلتر شما در این بخش یافت نشد.
+        موردی مطابق با فیلتر شما در این فاز یافت نشد.
       </div>
     `;
   }
@@ -303,7 +272,7 @@ export function renderChecklistItems(phaseTasks: TaskItem[]): string {
         <div class="p-3 sm:p-4 flex items-start justify-between gap-2.5 hover:bg-gray-50/60 active:bg-gray-100/60 transition select-none ${task.completed ? 'bg-gray-50/60 opacity-75' : ''}">
           <!-- بخش کلیک‌پذیر برای تیک زدن سریع در موبایل -->
           <div class="flex items-start gap-3 flex-1 min-w-0 cursor-pointer" onclick="window.planner.toggleTaskComplete('${task.id}')">
-            <!-- چک‌باکس با تاچ تارگت بزرگ و برجسته برای دسترسی راحت با انگشت شست -->
+            <!-- چک‌باکس با تاچ تارگت بزرگ برای لمس بسیار راحت با انگشت شست -->
             <button type="button" aria-label="تغییر وضعیت" class="mt-0.5 w-7 h-7 rounded-xl border-2 flex items-center justify-center shrink-0 transition ${task.completed ? 'bg-sage-600 border-sage-600 text-white shadow-xs' : 'border-gray-300 hover:border-amber-500 bg-white shadow-2xs'}">
               ${task.completed ? '<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>' : ''}
             </button>
@@ -355,11 +324,11 @@ export function renderTimelineItems(phaseTasks: TaskItem[]): string {
   return `
     <div class="relative p-3 sm:p-5 space-y-3 sm:space-y-5 before:content-[''] before:absolute before:right-6 sm:before:right-8 before:top-4 before:bottom-4 before:w-0.5 before:bg-rose-200">
       ${phaseTasks.map(task => {
-        const isHighlight = task.time === '18:00' || task.time === '20:00';
+        const isHighlight = task.time === '08:00' || task.time === '18:00' || task.time === '20:00';
         return `
           <div class="relative flex items-start gap-2.5 sm:gap-4 group">
             <!-- نشانگر ساعت تایم‌لاین -->
-            <div class="w-7 h-7 sm:w-10 sm:h-10 rounded-xl ${task.completed ? 'bg-sage-600 text-white' : (isHighlight ? 'bg-rose-600 text-white animate-pulse' : 'bg-white border-2 border-rose-300 text-rose-700')} flex items-center justify-center font-black text-[10px] sm:text-xs shrink-0 shadow-xs z-10 transition">
+            <div class="w-8 h-8 sm:w-11 sm:h-11 rounded-xl ${task.completed ? 'bg-sage-600 text-white' : (isHighlight ? 'bg-rose-600 text-white ring-2 ring-rose-200 animate-pulse' : 'bg-white border-2 border-rose-300 text-rose-700')} flex items-center justify-center font-black text-[10px] sm:text-xs shrink-0 shadow-xs z-10 transition">
               ${task.time ? toPersianDigits(task.time) : '••'}
             </div>
 
@@ -402,9 +371,79 @@ export function renderTimelineItems(phaseTasks: TaskItem[]): string {
   `;
 }
 
+export function renderPhaseTabs(): void {
+  const container = document.getElementById('phase-tabs-container');
+  if (!container) return;
+
+  const totalAll = tasks.length;
+  const doneAll = tasks.filter(t => t.completed).length;
+
+  let html = `
+    <button onclick="window.planner.setActivePhaseTab('all')" class="phase-tab-btn flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition shrink-0 active:scale-95 ${activePhaseTab === 'all' ? 'bg-gray-900 text-white shadow-xs' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}">
+      <span>نمایش همه فازها</span>
+      <span class="text-[10px] opacity-80">(${toPersianDigits(doneAll)}/${toPersianDigits(totalAll)})</span>
+    </button>
+  `;
+
+  PHASES.forEach(phase => {
+    const total = tasks.filter(t => t.phase === phase.id).length;
+    const done = tasks.filter(t => t.phase === phase.id && t.completed).length;
+    const isActive = activePhaseTab === phase.id;
+
+    let activeStyle = '';
+    if (isActive) {
+      if (phase.id === 'phase-wedding-day' || phase.id === 'phase-packing') {
+        activeStyle = 'bg-rose-600 text-white shadow-md ring-2 ring-rose-200';
+      } else {
+        activeStyle = 'bg-amber-700 text-white shadow-md ring-2 ring-amber-200';
+      }
+    } else {
+      activeStyle = 'bg-amber-50/90 text-gray-700 hover:bg-amber-100 border border-amber-200/50';
+    }
+
+    html += `
+      <button onclick="window.planner.setActivePhaseTab('${phase.id}')" class="phase-tab-btn flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition shrink-0 active:scale-95 ${activeStyle}">
+        <span>${(phase as any).icon || '📌'}</span>
+        <span>${(phase as any).shortTitle || phase.title}</span>
+        <span class="text-[10px] px-1.5 py-0.2 rounded-full ${isActive ? 'bg-white/20 text-white' : 'bg-white text-gray-600 border border-gray-200'}">
+          ${toPersianDigits(done)}/${toPersianDigits(total)}
+        </span>
+      </button>
+    `;
+  });
+
+  container.innerHTML = html;
+}
+
+export function setActivePhaseTab(phaseId: string): void {
+  activePhaseTab = phaseId;
+  try {
+    localStorage.setItem(ACTIVE_TAB_KEY, phaseId);
+  } catch (e) {}
+
+  if (phaseId === 'phase-wedding-day') {
+    updateNavActiveState('wedding');
+  } else if (phaseId === 'phase-packing') {
+    updateNavActiveState('packing');
+  } else if (phaseId === 'all') {
+    updateNavActiveState('all');
+  }
+
+  renderPhaseTabs();
+  renderPlanner();
+
+  // در موبایل آرام اسکرول شود روی محتوای فاز
+  const plannerContainer = document.getElementById('planner-container');
+  if (plannerContainer) {
+    const offset = plannerContainer.getBoundingClientRect().top + window.scrollY - 110;
+    window.scrollTo({ top: Math.max(0, offset), behavior: 'smooth' });
+  }
+}
+
 export function renderPlanner(): void {
   updateProgressBar();
   updateCountdownAndSmartBanner();
+  renderPhaseTabs();
 
   const container = document.getElementById('planner-container');
   if (!container) return;
@@ -413,9 +452,15 @@ export function renderPlanner(): void {
   const searchQuery = searchInput ? searchInput.value.trim().toLowerCase() : '';
   const activePhaseId = getActivePhaseId();
 
+  // فیلتر کردن فازها: اگر کاربری فاز خاصی را انتخاب کرده، فقط همان فاز نمایش داده شود تا صفحه اسکرولی نشود!
+  let phasesToRender = PHASES;
+  if (activePhaseTab !== 'all') {
+    phasesToRender = PHASES.filter(p => p.id === activePhaseTab);
+  }
+
   let html = '';
 
-  PHASES.forEach(phase => {
+  phasesToRender.forEach(phase => {
     let phaseTasks = tasks.filter(t => t.phase === phase.id);
 
     // مرتب‌سازی ساعتی در تایم‌لاین روز عروسی
@@ -456,44 +501,41 @@ export function renderPlanner(): void {
     const doneInPhase = tasks.filter(t => t.phase === phase.id && t.completed).length;
     const isCurrentFocus = phase.id === activePhaseId;
     const isTimeline = (phase as any).isTimeline;
-    const isCollapsed = collapsedPhases.has(phase.id);
 
     const headerBg = isTimeline
       ? 'bg-gradient-to-l from-rose-50 via-amber-50/70 to-white border-rose-200'
       : (isCurrentFocus ? 'bg-gradient-to-l from-amber-50 to-white border-amber-300 ring-2 ring-amber-200/50' : 'bg-white border-gray-200/80');
 
     html += `
-      <section id="section-${phase.id}" class="rounded-2xl sm:rounded-3xl border ${headerBg} shadow-2xs sm:shadow-sm overflow-hidden fade-in">
-        <div class="p-3 sm:p-5 border-b border-gray-100 flex items-center justify-between gap-2">
-          <!-- تیتر و آکاردئون بخش کلیک‌پذیر -->
-          <div class="flex-1 min-w-0 cursor-pointer select-none" onclick="window.planner.togglePhaseCollapse('${phase.id}')">
+      <section id="section-${phase.id}" class="rounded-2xl sm:rounded-3xl border ${headerBg} shadow-2xs sm:shadow-sm overflow-hidden fade-in mb-4">
+        <!-- هدر کارتی فاز -->
+        <div class="p-3.5 sm:p-5 border-b border-gray-100 flex items-center justify-between gap-2">
+          <div class="flex-1 min-w-0 select-none">
             <div class="flex flex-wrap items-center gap-1.5 mb-1">
               <span class="text-[10px] sm:text-xs font-extrabold px-2 sm:px-2.5 py-0.5 rounded-full ${isTimeline ? 'bg-rose-600 text-white' : 'bg-amber-100 text-amber-900'}">
                 ${phase.badge}
               </span>
               ${isCurrentFocus ? '<span class="text-[9px] sm:text-xs font-bold px-1.5 py-0.5 rounded-full bg-sage-600 text-white">امروز</span>' : ''}
               <span class="text-[10px] sm:text-xs font-semibold text-gray-500">
-                (${toPersianDigits(doneInPhase)} از ${toPersianDigits(totalInPhase)})
+                (${toPersianDigits(doneInPhase)} از ${toPersianDigits(totalInPhase)} انجام شد)
               </span>
             </div>
             <div class="flex items-center gap-2">
-              <h3 class="text-xs sm:text-base font-extrabold text-gray-900 leading-snug truncate">${phase.title}</h3>
-              <!-- آیکون آکاردئون -->
-              <svg class="w-4 h-4 text-gray-400 shrink-0 transition-transform duration-200 ${isCollapsed ? 'rotate-180' : ''}" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-              </svg>
+              <span class="text-base sm:text-lg">${(phase as any).icon || '📌'}</span>
+              <h3 class="text-sm sm:text-base font-extrabold text-gray-900 leading-snug truncate">${phase.title}</h3>
             </div>
-            <p class="text-[10px] sm:text-xs text-gray-500 mt-0.5 truncate">${phase.subtitle}</p>
+            <p class="text-[11px] sm:text-xs text-gray-500 mt-0.5 leading-relaxed">${phase.subtitle}</p>
           </div>
 
-          <!-- دکمه افزودن به این بخش با تاچ تارگت سریع -->
+          <!-- دکمه افزودن کار به این فاز -->
           <button onclick="event.stopPropagation(); window.planner.openAddModal('${phase.id}')" class="no-print shrink-0 inline-flex items-center gap-1 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-xl bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 text-[11px] sm:text-xs font-bold shadow-2xs transition active:scale-95">
             <svg class="w-3.5 h-3.5 text-sage-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
             <span class="hidden sm:inline">افزودن</span>
           </button>
         </div>
 
-        <div class="bg-white ${isCollapsed ? 'hidden' : 'block'}">
+        <!-- لیست آیتم‌های فاز -->
+        <div class="bg-white">
           ${isTimeline ? renderTimelineItems(phaseTasks) : renderChecklistItems(phaseTasks)}
         </div>
       </section>
@@ -502,8 +544,8 @@ export function renderPlanner(): void {
 
   if (!html) {
     container.innerHTML = `
-      <div class="bg-white rounded-3xl p-8 sm:p-12 text-center border border-gray-200 space-y-3">
-        <p class="text-gray-500 text-xs sm:text-sm">هیچ موردی مطابق فیلتر یا جستجوی شما یافت نشد.</p>
+      <div class="bg-white rounded-3xl p-8 text-center border border-gray-200 space-y-3">
+        <p class="text-gray-500 text-xs sm:text-sm">هیچ موردی مطابق فیلتر یا جستجوی شما در این فاز یافت نشد.</p>
         <button onclick="window.planner.resetFilters()" class="px-4 py-2.5 rounded-xl bg-amber-50 text-amber-900 text-xs font-bold hover:bg-amber-100 transition active:scale-95">
           پاک کردن فیلترها و نمایش همه
         </button>
@@ -545,7 +587,7 @@ export function openAddModal(defaultPhase: string | null = null): void {
   if (modalTitle) modalTitle.textContent = 'افزودن کار یا رویداد جدید';
   if (editTaskId) editTaskId.value = '';
   if (taskTitle) taskTitle.value = '';
-  if (taskPhase) taskPhase.value = defaultPhase || getActivePhaseId();
+  if (taskPhase) taskPhase.value = defaultPhase || (activePhaseTab !== 'all' ? activePhaseTab : getActivePhaseId());
   if (taskTime) taskTime.value = '';
   if (taskCategory) taskCategory.value = 'تالار و پذیرایی';
   if (taskOwner) taskOwner.value = 'مشترک';
@@ -645,12 +687,8 @@ export function saveTaskForm(event: Event): void {
     showToast('مورد جدید ذخیره شد');
   }
 
-  // اگر فاز مقصد جمع بود، بازش کنیم تا کاربر تغییر را ببیند
-  if (collapsedPhases.has(phase)) {
-    collapsedPhases.delete(phase);
-    saveCollapsedPhases();
-  }
-
+  // سوئیچ تب به همان فاز تا تغییر بلافاصله دیده شود
+  activePhaseTab = phase;
   saveTasks();
   closeTaskModal();
   renderPlanner();
@@ -721,48 +759,24 @@ export function filterBySmartFocus(): void {
   setFilterStatus('focus');
   updateNavActiveState('focus');
   const activeId = getActivePhaseId();
-  // مطمئن شویم این فاز باز است
-  if (collapsedPhases.has(activeId)) {
-    collapsedPhases.delete(activeId);
-    saveCollapsedPhases();
-  }
-  const el = document.getElementById('section-' + activeId);
-  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  setActivePhaseTab(activeId);
 }
 
 export function jumpToWeddingDay(): void {
   setFilterStatus('all');
-  updateNavActiveState('wedding');
-  // مطمئن شویم فاز روز عروسی باز است
-  if (collapsedPhases.has('phase-wedding-day')) {
-    collapsedPhases.delete('phase-wedding-day');
-    saveCollapsedPhases();
-    renderPlanner();
-  }
-  setTimeout(() => {
-    const el = document.getElementById('section-phase-wedding-day');
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 60);
+  setActivePhaseTab('phase-wedding-day');
 }
 
 export function jumpToPackingList(): void {
   setFilterStatus('all');
-  updateNavActiveState('packing');
-  if (collapsedPhases.has('phase-packing')) {
-    collapsedPhases.delete('phase-packing');
-    saveCollapsedPhases();
-    renderPlanner();
-  }
-  setTimeout(() => {
-    const el = document.getElementById('section-phase-packing');
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 60);
+  setActivePhaseTab('phase-packing');
 }
 
 export function resetFilters(): void {
   const searchInput = document.getElementById('search-input') as HTMLInputElement | null;
   if (searchInput) searchInput.value = '';
-  updateNavActiveState('all');
+  activePhaseTab = 'phase-wedding-day';
+  updateNavActiveState('wedding');
   setOwnerFilter('all');
   setFilterStatus('all');
 }
@@ -800,8 +814,7 @@ export function toggleResetConfirm(show: boolean): void {
 
 export function confirmResetData(): void {
   tasks = JSON.parse(JSON.stringify(DEFAULT_TASKS));
-  collapsedPhases.clear();
-  saveCollapsedPhases();
+  activePhaseTab = 'phase-wedding-day';
   saveTasks();
   closeSettingsModal();
   renderPlanner();
@@ -836,7 +849,7 @@ export function initScrollHeader(): void {
       window.requestAnimationFrame(() => {
         const currentScrollY = window.scrollY;
 
-        // فقط در اسکرول‌های رو به پایین سریع در موبایل هدر را مخفی کنیم
+        // فقط در اسکرول‌های سریع رو به پایین در موبایل هدر را مخفی کنیم
         if (currentScrollY > lastScrollY && currentScrollY > 100) {
           header.classList.add('-translate-y-full');
         } else if (currentScrollY < lastScrollY) {
@@ -852,7 +865,13 @@ export function initScrollHeader(): void {
 }
 
 export function initApp(): void {
-  loadCollapsedPhases();
+  try {
+    const savedTab = localStorage.getItem(ACTIVE_TAB_KEY);
+    if (savedTab) {
+      activePhaseTab = savedTab;
+    }
+  } catch (e) {}
+
   tasks = loadTasks();
   renderPlanner();
   initScrollHeader();
@@ -877,13 +896,13 @@ if (typeof window !== 'undefined') {
     filterBySmartFocus,
     jumpToWeddingDay,
     jumpToPackingList,
+    setActivePhaseTab,
     resetFilters,
     openSettingsModal,
     closeSettingsModal,
     setSimulatedDate,
     toggleResetConfirm,
     confirmResetData,
-    showToast,
-    togglePhaseCollapse
+    showToast
   };
 }

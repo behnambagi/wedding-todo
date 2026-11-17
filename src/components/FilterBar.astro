@@ -1,8 +1,19 @@
 ---
 // FilterBar.astro
 ---
-<section class="no-print bg-white rounded-2xl border border-gray-200/80 p-2.5 sm:p-4 shadow-2xs sm:shadow-sm space-y-2">
-  <div class="flex flex-col md:flex-row gap-2">
+<section class="no-print bg-white rounded-2xl border border-gray-200/80 p-2.5 sm:p-4 shadow-2xs sm:shadow-sm space-y-2.5">
+  <!-- نوار تب‌های فازها (سوئیچ اختصاصی بین فازها برای خلاص شدن از اسکرول طولانی موبایل) -->
+  <div class="space-y-1">
+    <div class="flex items-center justify-between text-[11px] text-gray-500 font-semibold px-0.5">
+      <span>انتخاب فاز برنامه:</span>
+      <button onclick="window.planner.setActivePhaseTab('all')" class="text-amber-800 font-bold hover:underline">نمایش همه</button>
+    </div>
+    <div id="phase-tabs-container" class="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar touch-pan-x -mx-1 px-1">
+      <!-- تب‌ها به صورت داینامیک از PHASES توسط جاوااسکریپت پر می‌شوند تا درصد و اکتیو بودن آپدیت بماند -->
+    </div>
+  </div>
+
+  <div class="flex flex-col md:flex-row gap-2 pt-1 border-t border-gray-100">
     <!-- فیلد جستجو با دکمه پاک کردن -->
     <div class="relative flex-1">
       <svg class="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -17,7 +28,7 @@
     <!-- فیلتر وضعیت اسکرول افقی لمسی نرم و بدون اسکرول‌بار -->
     <div class="flex items-center gap-1.5 overflow-x-auto pb-0.5 md:pb-0 no-scrollbar touch-pan-x -mx-1 px-1">
       <button onclick="window.planner.setFilterStatus('all')" data-filter="all" class="filter-btn px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition bg-gray-900 text-white shrink-0 active:scale-95">
-        همه کارها
+        همه وضعیت‌ها
       </button>
       <button onclick="window.planner.setFilterStatus('focus')" data-filter="focus" class="filter-btn px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition bg-gray-100 text-gray-700 hover:bg-gray-200 shrink-0 active:scale-95">
         ⭐ اولویت امروز
