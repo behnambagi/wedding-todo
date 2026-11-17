@@ -8,6 +8,17 @@ body {
   color: #1F2937;
   overflow-x: hidden;
   -webkit-tap-highlight-color: transparent;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* بهینه‌سازی فرم‌ها در iOS بدون زوم ناخواسته */
+input, select, textarea {
+  font-size: 16px !important;
+}
+@media (min-width: 640px) {
+  input, select, textarea {
+    font-size: 0.875rem !important; /* 14px */
+  }
 }
 
 /* اسکرول بدون نمایش اسکرول‌بار زننده در موبایل */
@@ -17,6 +28,16 @@ body {
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* پشتیبانی از Safe Area در موبایل‌های با ناچ */
+.pb-safe {
+  padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px));
+}
+
+/* انیمیشن باز و بسته شدن آکاردئون فازها */
+.accordion-content {
+  transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease-in-out;
 }
 
 /* استایل اختصاصی اسکرول‌بار برای دسکتاپ */

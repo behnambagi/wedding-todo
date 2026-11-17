@@ -1,43 +1,43 @@
 ---
 // FilterBar.astro
 ---
-<section class="no-print bg-white rounded-2xl border border-gray-200/80 p-2.5 sm:p-4 shadow-2xs sm:shadow-sm space-y-2.5">
-  <div class="flex flex-col md:flex-row gap-2.5">
+<section class="no-print bg-white rounded-2xl border border-gray-200/80 p-2.5 sm:p-4 shadow-2xs sm:shadow-sm space-y-2">
+  <div class="flex flex-col md:flex-row gap-2">
     <!-- فیلد جستجو با دکمه پاک کردن -->
     <div class="relative flex-1">
       <svg class="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
       </svg>
-      <input type="text" id="search-input" oninput="window.planner.renderPlanner()" placeholder="جستجو در کارها، ساعت‌ها، تالار، آتلیه..." class="w-full pr-9 sm:pr-10 pl-8 py-2 sm:py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-xs sm:text-sm focus:bg-white focus:border-amber-500 focus:ring-2 focus:ring-amber-200 outline-none transition">
+      <input type="text" id="search-input" oninput="window.planner.renderPlanner()" placeholder="جستجو در کارها، ساعت‌ها، تالار، آتلیه..." class="w-full pr-9 sm:pr-10 pl-8 py-2 sm:py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-xs sm:text-sm focus:bg-white focus:border-amber-500 focus:ring-2 focus:ring-amber-200 outline-none transition" />
       <button type="button" onclick="const input = document.getElementById('search-input'); if(input){input.value=''; window.planner.renderPlanner();}" class="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-1">
         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
       </button>
     </div>
 
-    <!-- فیلتر وضعیت اسکرول افقی لمسی نرم -->
-    <div class="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 no-scrollbar touch-pan-x">
-      <button onclick="window.planner.setFilterStatus('all')" data-filter="all" class="filter-btn px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition bg-gray-900 text-white shrink-0">
+    <!-- فیلتر وضعیت اسکرول افقی لمسی نرم و بدون اسکرول‌بار -->
+    <div class="flex items-center gap-1.5 overflow-x-auto pb-0.5 md:pb-0 no-scrollbar touch-pan-x -mx-1 px-1">
+      <button onclick="window.planner.setFilterStatus('all')" data-filter="all" class="filter-btn px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition bg-gray-900 text-white shrink-0 active:scale-95">
         همه کارها
       </button>
-      <button onclick="window.planner.setFilterStatus('focus')" data-filter="focus" class="filter-btn px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition bg-gray-100 text-gray-700 hover:bg-gray-200 shrink-0">
+      <button onclick="window.planner.setFilterStatus('focus')" data-filter="focus" class="filter-btn px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition bg-gray-100 text-gray-700 hover:bg-gray-200 shrink-0 active:scale-95">
         ⭐ اولویت امروز
       </button>
-      <button onclick="window.planner.setFilterStatus('pending')" data-filter="pending" class="filter-btn px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition bg-gray-100 text-gray-700 hover:bg-gray-200 shrink-0">
+      <button onclick="window.planner.setFilterStatus('pending')" data-filter="pending" class="filter-btn px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition bg-gray-100 text-gray-700 hover:bg-gray-200 shrink-0 active:scale-95">
         انجام‌نشده
       </button>
-      <button onclick="window.planner.setFilterStatus('completed')" data-filter="completed" class="filter-btn px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition bg-gray-100 text-gray-700 hover:bg-gray-200 shrink-0">
+      <button onclick="window.planner.setFilterStatus('completed')" data-filter="completed" class="filter-btn px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold whitespace-nowrap transition bg-gray-100 text-gray-700 hover:bg-gray-200 shrink-0 active:scale-95">
         تکمیل‌شده
       </button>
     </div>
   </div>
 
   <!-- فیلتر مسئول انجام کار به صورت چیپ‌های افقی روان -->
-  <div class="flex items-center gap-1.5 overflow-x-auto pt-2 border-t border-gray-100 no-scrollbar text-xs">
-    <span class="text-gray-400 font-medium shrink-0 ml-1">مسئول:</span>
-    <button onclick="window.planner.setOwnerFilter('all')" data-owner="all" class="owner-btn px-2.5 py-1 rounded-lg font-semibold bg-amber-100 text-amber-900 whitespace-nowrap shrink-0">همه</button>
-    <button onclick="window.planner.setOwnerFilter('مشترک')" data-owner="مشترک" class="owner-btn px-2.5 py-1 rounded-lg font-medium bg-gray-50 text-gray-600 hover:bg-gray-100 whitespace-nowrap shrink-0">عروس و داماد</button>
-    <button onclick="window.planner.setOwnerFilter('عروس')" data-owner="عروس" class="owner-btn px-2.5 py-1 rounded-lg font-medium bg-gray-50 text-gray-600 hover:bg-gray-100 whitespace-nowrap shrink-0">عروس خانم</button>
-    <button onclick="window.planner.setOwnerFilter('داماد')" data-owner="داماد" class="owner-btn px-2.5 py-1 rounded-lg font-medium bg-gray-50 text-gray-600 hover:bg-gray-100 whitespace-nowrap shrink-0">آقا داماد</button>
-    <button onclick="window.planner.setOwnerFilter('خانواده/ساقدوش')" data-owner="خانواده/ساقدوش" class="owner-btn px-2.5 py-1 rounded-lg font-medium bg-gray-50 text-gray-600 hover:bg-gray-100 whitespace-nowrap shrink-0">ساقدوش / خانواده</button>
+  <div class="flex items-center gap-1.5 overflow-x-auto pt-1.5 border-t border-gray-100 no-scrollbar text-xs -mx-1 px-1">
+    <span class="text-gray-400 font-medium shrink-0 ml-1 text-[11px] sm:text-xs">مسئول:</span>
+    <button onclick="window.planner.setOwnerFilter('all')" data-owner="all" class="owner-btn px-2.5 py-1 rounded-lg font-semibold bg-amber-100 text-amber-900 whitespace-nowrap shrink-0 active:scale-95">همه</button>
+    <button onclick="window.planner.setOwnerFilter('مشترک')" data-owner="مشترک" class="owner-btn px-2.5 py-1 rounded-lg font-medium bg-gray-50 text-gray-600 hover:bg-gray-100 whitespace-nowrap shrink-0 active:scale-95">عروس و داماد</button>
+    <button onclick="window.planner.setOwnerFilter('عروس')" data-owner="عروس" class="owner-btn px-2.5 py-1 rounded-lg font-medium bg-gray-50 text-gray-600 hover:bg-gray-100 whitespace-nowrap shrink-0 active:scale-95">عروس خانم</button>
+    <button onclick="window.planner.setOwnerFilter('داماد')" data-owner="داماد" class="owner-btn px-2.5 py-1 rounded-lg font-medium bg-gray-50 text-gray-600 hover:bg-gray-100 whitespace-nowrap shrink-0 active:scale-95">آقا داماد</button>
+    <button onclick="window.planner.setOwnerFilter('خانواده/ساقدوش')" data-owner="خانواده/ساقدوش" class="owner-btn px-2.5 py-1 rounded-lg font-medium bg-gray-50 text-gray-600 hover:bg-gray-100 whitespace-nowrap shrink-0 active:scale-95">ساقدوش / خانواده</button>
   </div>
 </section>

@@ -2,13 +2,13 @@
 // SettingsModal.astro
 ---
 <div id="settings-modal" class="no-print fixed inset-0 z-50 hidden items-end sm:items-center justify-center bg-black/60 backdrop-blur-xs p-0 sm:p-4">
-  <div class="bg-white rounded-t-3xl sm:rounded-3xl max-w-md w-full p-4 sm:p-6 shadow-2xl border border-gray-100 fade-in max-h-[85vh] overflow-y-auto">
+  <div class="bg-white rounded-t-3xl sm:rounded-3xl max-w-md w-full p-4 sm:p-6 shadow-2xl border border-gray-100 fade-in max-h-[90vh] overflow-y-auto pb-safe">
     <!-- نشانگر سوایپ موبایل -->
-    <div class="w-10 h-1 bg-gray-200 rounded-full mx-auto mb-3 sm:hidden"></div>
+    <div class="w-12 h-1.5 bg-gray-300 rounded-full mx-auto mb-3 sm:hidden"></div>
 
     <div class="flex items-center justify-between pb-3 border-b border-gray-100">
       <h3 class="text-base sm:text-lg font-extrabold text-gray-900">تنظیمات و شبیه‌سازی زمان</h3>
-      <button type="button" onclick="window.planner.closeSettingsModal()" class="p-1.5 sm:p-2 rounded-xl text-gray-400 hover:bg-gray-100">
+      <button type="button" onclick="window.planner.closeSettingsModal()" class="p-2 rounded-xl text-gray-400 hover:bg-gray-100 active:scale-95 transition" aria-label="بستن">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
       </button>
     </div>
@@ -20,10 +20,10 @@
           تاریخ عروسی روی <strong>۴ آذر ۱۴۰۵ (۲۵ نوامبر ۲۰۲۶)</strong> تنظیم شده است. می‌توانید برای تست، تاریخ امروز را شبیه‌سازی کنید تا ببینید پلنر در هر روز چه پیشنهادی می‌دهد:
         </p>
         <div class="grid grid-cols-2 gap-2 pt-1">
-          <button type="button" onclick="window.planner.setSimulatedDate(null)" class="px-3 py-2 rounded-xl bg-white border border-amber-300 text-xs font-bold text-gray-800 hover:bg-amber-100">تاریخ واقعی سیستم</button>
-          <button type="button" onclick="window.planner.setSimulatedDate('2026-11-22T10:00:00')" class="px-3 py-2 rounded-xl bg-white border border-amber-300 text-xs font-bold text-gray-800 hover:bg-amber-100">۳ روز مانده (۱ آذر)</button>
-          <button type="button" onclick="window.planner.setSimulatedDate('2026-11-24T12:00:00')" class="px-3 py-2 rounded-xl bg-white border border-amber-300 text-xs font-bold text-gray-800 hover:bg-amber-100">۱ روز مانده (۳ آذر)</button>
-          <button type="button" onclick="window.planner.setSimulatedDate('2026-11-25T03:45:00')" class="px-3 py-2 rounded-xl bg-rose-600 text-white text-xs font-bold hover:bg-rose-700">صبح عروسی (۴ آذر)</button>
+          <button type="button" onclick="window.planner.setSimulatedDate(null)" class="px-3 py-2.5 rounded-xl bg-white border border-amber-300 text-xs font-bold text-gray-800 hover:bg-amber-100 active:scale-95 transition">تاریخ واقعی سیستم</button>
+          <button type="button" onclick="window.planner.setSimulatedDate('2026-11-22T10:00:00')" class="px-3 py-2.5 rounded-xl bg-white border border-amber-300 text-xs font-bold text-gray-800 hover:bg-amber-100 active:scale-95 transition">۳ روز مانده (۱ آذر)</button>
+          <button type="button" onclick="window.planner.setSimulatedDate('2026-11-24T12:00:00')" class="px-3 py-2.5 rounded-xl bg-white border border-amber-300 text-xs font-bold text-gray-800 hover:bg-amber-100 active:scale-95 transition">۱ روز مانده (۳ آذر)</button>
+          <button type="button" onclick="window.planner.setSimulatedDate('2026-11-25T03:45:00')" class="px-3 py-2.5 rounded-xl bg-rose-600 text-white text-xs font-bold hover:bg-rose-700 active:scale-95 transition">صبح عروسی (۴ آذر)</button>
         </div>
       </div>
 
@@ -45,11 +45,11 @@
         <div id="reset-confirm-box" class="hidden p-3 rounded-xl bg-rose-50 border border-rose-200 mb-2">
           <p class="text-xs text-rose-800 font-semibold mb-2">آیا مطمئن هستید؟ تمام تغییرات شما پاک شده و لیست اولیه ۴ آذر بازگردانی می‌شود.</p>
           <div class="flex gap-2">
-            <button type="button" onclick="window.planner.confirmResetData()" class="px-3 py-1.5 rounded-lg bg-rose-600 text-white text-xs font-bold">بله، بازنشانی شود</button>
-            <button type="button" onclick="window.planner.toggleResetConfirm(false)" class="px-3 py-1.5 rounded-lg bg-white text-gray-700 text-xs font-semibold border">انصراف</button>
+            <button type="button" onclick="window.planner.confirmResetData()" class="flex-1 px-3 py-2 rounded-lg bg-rose-600 text-white text-xs font-bold active:scale-95 transition">بله، بازنشانی شود</button>
+            <button type="button" onclick="window.planner.toggleResetConfirm(false)" class="flex-1 px-3 py-2 rounded-lg bg-white text-gray-700 text-xs font-semibold border active:scale-95 transition">انصراف</button>
           </div>
         </div>
-        <button id="reset-trigger-btn" type="button" onclick="window.planner.toggleResetConfirm(true)" class="w-full py-2.5 rounded-xl border border-rose-200 text-rose-700 hover:bg-rose-50 text-xs font-bold transition">
+        <button id="reset-trigger-btn" type="button" onclick="window.planner.toggleResetConfirm(true)" class="w-full py-3 rounded-xl border border-rose-200 text-rose-700 hover:bg-rose-50 active:bg-rose-100 text-xs font-bold transition active:scale-95">
           بازنشانی به دیتای پیش‌فرض عروسی ۴ آذر
         </button>
       </div>
